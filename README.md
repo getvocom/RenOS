@@ -1,42 +1,54 @@
-# agentOS landing page
+# RenOS website
 
-Static marketing site for agentOS: the governance layer for AI at work.
-Plain HTML, CSS and a few lines of JavaScript. No build step, no dependencies.
+Static marketing site for RenOS, the AI operating system for teams, from Vocom AI.
+Dark visual design from the approved homepage; sitemap, titles, keywords and copy from the RenOS website spec.
+
+The HTML pages are generated. Edit the files in `_build/`, then rebuild.
 
 ## Structure
 
 ```
-index.html      Page markup
-css/styles.css  All styles (design tokens at the top under :root)
-js/main.js      Mobile menu and sticky-header behaviour
-favicon.svg     Browser tab icon
-.nojekyll       Tells GitHub Pages to serve files as-is
+_build/build.py     Layout, components, SEO tags and schema
+_build/content.py   Every page's copy, titles, descriptions and FAQs, plus switches
+_build/stars.py     Star positions for the hero globe
+assets/css/site.css Styles
+assets/js/site.js   Mega menu, mobile menu, forms, pricing toggle
+assets/og-image.png Social share image
+images/             Product screenshots (see below)
+*.html, product/, teams/, industries/   Generated pages (don't edit by hand)
 ```
 
-## Run locally
-
-Open `index.html` in a browser, or serve the folder:
+## Build
 
 ```bash
-python3 -m http.server 8000
+python3 _build/build.py
 ```
 
-Then visit http://localhost:8000.
+This builds the staging site for https://getvocom.github.io/RenOS/ (every page `noindex`, links prefixed with `/RenOS`).
 
-## Deploy with GitHub Pages
+When the site moves to https://renos.vocom.ai, build with `--prod` instead. That removes `noindex`, drops the `/RenOS` prefix and writes `sitemap.xml` and `robots.txt`.
 
-1. Create a new repository on GitHub and push this folder to it:
+## Switches in `_build/content.py`
 
-   ```bash
-   git remote add origin https://github.com/<you>/<repo>.git
-   git push -u origin main
-   ```
+- `SHOW_PRICES = False`: pricing cards, the comparison table and the private-deployment card show "Talk to Sales". Set to `True` once prices are cleared for public use.
+- `FORM_ENDPOINT = ""`: the pilot and contact forms tell visitors nothing was sent. Set it to a form service URL (for example a Formspree endpoint) to make them work.
 
-2. In the repository, go to **Settings → Pages**.
-3. Under **Build and deployment**, set **Source** to *Deploy from a branch*, choose `main` and `/ (root)`, then save.
-4. The site will be live at `https://<you>.github.io/<repo>/` within a minute or two.
+## Adding product screenshots
 
-## Before going live
+Drop an image into `images/` with one of these names (`.webp` preferred, under 200 KB), then rebuild. It replaces the HTML mockup in that spot.
 
-- The final **Book a pilot** button links to `mailto:hello@example.com`. Replace it in `index.html` (search for `TODO`) with your real email or booking link.
-- The footer still says "Working draft for design review", as in the Figma file.
+| File name | Where it appears |
+|---|---|
+| `home-hero` | Home hero |
+| `product-hero` | Product overview hero |
+| `product-chat`, `product-builder`, `product-agents` | Mode page heroes |
+| `product-routing`, `product-audit-trail`, `product-admin` | Feature page heroes |
+| `models-hero`, `pilot-hero` | Models and pilot heroes |
+| `teams-<slug>` (e.g. `teams-sales`) | Team page heroes |
+| `industries-<slug>` (e.g. `industries-credit-unions`) | Industry page heroes |
+
+## Not built yet (blocked by the spec's open items)
+
+- Privacy and Terms pages: need real legal text.
+- Team page: needs names, roles, photos and permission.
+- Blog posts: each needs a verified, current news hook.
