@@ -355,7 +355,7 @@ svg {
     flex-direction: column;
     gap: 0;
     padding: 8px var(--gutter) 20px;
-    background: rgba(10, 12, 17, 0.97);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
     display: none;
   }
@@ -389,10 +389,10 @@ svg {
 }
 .hero-title {
   margin-top: 20px;
-  font-size: clamp(40px, 6vw, 66px);
+  font-size: clamp(38px, 5.4vw, 62px);
   font-weight: 700;
   line-height: 1.12;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 .hero-title .gradient-text {
   display: block;
@@ -512,9 +512,9 @@ svg {
 }
 @media (max-width: 520px) {
   .float-card--rationale { top: 2%; left: 0; }
-  .float-card--session { top: auto; bottom: -4%; left: auto; right: 0; }
+  .float-card--session { top: auto; bottom: -4%; left: auto; right: 0; width: 62%; }
   .float-text { font-size: 12px; }
-  .float-card .pill { white-space: normal; }
+  .float-card .pill { padding: 0; background: none; white-space: normal; }
 }
 
 /* ---------- Problems ---------- */
