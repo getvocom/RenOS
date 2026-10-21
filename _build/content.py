@@ -375,7 +375,7 @@ INDUSTRIES = [
         ],
     },
     {
-        "slug": "msps", "name": "MSPs and IT Partners", "accent": VIOLET,
+        "slug": "msps", "menu": "Governed AI as a managed service", "name": "MSPs and IT Partners", "accent": VIOLET,
         "title": "AI for MSPs: Governed AI as a Managed Service",
         "description": "AI for MSPs: add governed AI as a service line next to security and compliance, with one admin view across clients and no mixing of data. Book a demo.",
         "h1": "AI for MSPs Ready to Offer Governed AI",
@@ -414,8 +414,8 @@ NAV = [
     ]),
     ("Industries", [
         ("By Industry", [("All Industries", "/industries", "Governed AI for your sector")] +
-         [(i["name"], f"/industries/{i['slug']}", "AI for " + i["name"].lower()) for i in INDUSTRIES[:4]]),
-        ("", [(i["name"], f"/industries/{i['slug']}", "AI for " + i["name"].lower()) for i in INDUSTRIES[4:]]),
+         [(i["name"], f"/industries/{i['slug']}", i.get("menu", "AI for " + i["name"].lower())) for i in INDUSTRIES[:4]]),
+        ("", [(i["name"], f"/industries/{i['slug']}", i.get("menu", "AI for " + i["name"].lower())) for i in INDUSTRIES[4:]]),
     ]),
     ("Resources", [
         ("Learn", [
