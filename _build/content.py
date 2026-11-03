@@ -14,6 +14,10 @@ FORM_ENDPOINT = ""
 # Set to True once they're approved; every card, table and FAQ then shows the figures.
 SHOW_PRICES = False
 
+# Where the RenOS app lives. The website's Log In page hands off to {APP_URL}/login.
+# Planned address once DNS and HTTPS (nginx) are set up on the app server.
+APP_URL = "https://app.rengroup.ai"
+
 # Single source of truth for facts reused across pages.
 FACTS = {
     "tagline": "The AI Operating System for Teams",
@@ -37,6 +41,7 @@ FEATURES = [
     ("Audit Trail", "/product/audit-trail", "Every task writes a record anyone can read."),
     ("Admin Dashboard", "/product/admin", "Spend, policy and access in one place."),
     ("Supported AI Models", "/models", "Hundreds of models, one governed workspace."),
+    ("How Credits Work", "/product/credits", "From top-up to audit record, step by step."),
 ]
 
 # ------------------------------------------------------------------ Teams
@@ -866,7 +871,7 @@ def pages():
                   "text_priced": 'From $1,500 per environment per month. Run RenOS on your own infrastructure. See <a href="/security">security and data</a>.'},
                  {"title": "Free Admin Seats", "text": "Admins, auditors and read-only compliance reviewers never count as paid seats."}]},
             {"type": "cards", "eyebrow": "RenOS Credits", "h2": "Model Usage, Priced the Way Models Are Priced", "cols": 4,
-             "lede": 'You see exactly what every task cost, in the same record that shows why it ran. See the <a href="/product/audit-trail">AI audit trail</a>.',
+             "lede": 'You see exactly what every task cost, in the same record that shows why it ran. See <a href="/product/credits">how RenOS credits work</a>, step by step.',
              "items": [
                  {"title": "Credits Track Real Usage", "text": "Each task spends credits at its model's published rate, so cost follows the work."},
                  {"title": "Cost in the Audit Trail", "text": "Every governed task records the model, the credits spent and the policy that chose it."},
@@ -1029,6 +1034,54 @@ def pages():
                 {"title": t["name"], "text": t["h1"] + ".", "href": f"/teams/{t['slug']}", "accent": t["accent"], "more": "Read more"} for t in TEAMS]},
             {"type": "chips", "h2": "Use AI by Industry", "items": [(i["name"], f"/industries/{i['slug']}") for i in INDUSTRIES]},
         ],
+    })
+
+    # ---------------- How credits work
+    P.append({
+        "route": "/product/credits", "crumb": "How Credits Work", "crumbs": [("Product", "/product")], "software": True,
+        "software_name": "RenOS Credits",
+        "title": "How RenOS Credits Work, From Top-Up to Audit",
+        "description": "How RenOS credits work, step by step: top up, set team budgets, run a task with a hold, settle actual usage and see the cost in the audit trail.",
+        "hero": {"eyebrow": "RenOS Credits", "h1": "How RenOS Credits Work",
+                 "lede": "Every task spends credits for the model usage it actually needs. Here's how a credit moves through RenOS, from the admin's first top-up to the record an auditor reads.",
+                 "buttons": [("Book a Demo", "/contact"), ("See Pricing", "/pricing", "ghost")],
+                 "visual": {"shot": "credits-hero", "fallback": "buy"}},
+        "sections": [
+            {"type": "flow", "id": "steps", "eyebrow": "Step by Step", "h2": "Follow a Credit Through RenOS",
+             "lede": "Seven steps, from the admin's billing page to the moment a team hits its cap. These are the screens your admin and your team actually see.",
+             "steps": [
+                 ("Buy Credits", "buy", "The admin tops up by card, or by invoice on Enterprise. Auto top-up keeps the balance from running dry."),
+                 ("Set Budgets and Caps", "budgets", 'The admin sets monthly budgets per team and per user, with alerts as they fill. Agent tasks get a hard ceiling so a runaway loop can\'t drain the balance. See the <a href="/product/admin">admin dashboard</a>.'),
+                 ("Choose Allowed Models", "supply", 'Every data class gets its own list of allowed models. Regulated data stays on approved models or your own keys. See <a href="/product/routing">policy routing</a>.'),
+                 ("Run a Task", "task-hold", "A team member runs a task. Policy picks the model, explains why in plain language, and places a hold for the estimated cost before anything runs."),
+                 ("Meter and Settle", "settle", "When the task finishes, RenOS charges for the tokens actually used, releases the rest of the hold, and updates team and organization balances."),
+                 ("Read the Audit Record", "audit-credits", 'Cost becomes part of the record: who ran what, on which model, under which policy, and what it cost. See the <a href="/product/audit-trail">AI audit trail</a>.'),
+                 ("Hit a Budget Limit", "limit", "When a team reaches its cap, work pauses instead of overspending. People can pick a lower-cost model or ask the budget owner to approve more."),
+             ]},
+            {"type": "cards", "eyebrow": "Key Ideas", "h2": "What Makes Credits Predictable", "cols": 4, "items": [
+                {"title": "Credits Track Real Usage", "text": "Each task is charged for the tokens it actually used, at its model's published rate."},
+                {"title": "A Hold Before Anything Runs", "text": "The estimated cost is reserved first, so a task never starts without budget to finish."},
+                {"title": "Cost Lives in the Record", "text": "Every task's credits sit next to the model and policy that chose it."},
+                {"title": "Work Pauses at the Cap", "text": "Teams can't overspend. Owners approve increases, and agent runs stop at their ceiling."}]},
+            {"type": "faq", "h2": "Frequently Asked Questions", "items": [
+                ("What is a RenOS credit?", 'A credit is the unit RenOS uses for model usage. Each task spends credits based on the tokens it actually used. See <a href="/pricing">RenOS pricing</a> for plans.'),
+                ("Why does RenOS place a hold before a task runs?", "The hold reserves the estimated cost so the task can finish within budget. When it's done, RenOS charges actual usage and releases the rest."),
+                ("What happens when a team runs out of budget?", "Work pauses instead of overspending. The person can switch to a lower-cost model or ask the budget owner to approve a one-time increase."),
+                ("Can an agent run up a big bill?", "No. Each agent task has a hard ceiling, and the run stops when it reaches it."),
+                ("Where can we see what each task cost?", 'In the admin view and in every audit entry. See the <a href="/product/admin">admin dashboard</a>.'),
+                ("Who can top up credits?", "Org admins, by card or by invoice on Enterprise. Auto top-up can refill the balance when it runs low.")]},
+        ],
+    })
+
+    # ---------------- Log in portal (noindex: a door to the app, not a page to rank)
+    P.append({
+        "route": "/login", "crumb": "Log In", "noindex": True,
+        "title": "Log In to RenOS",
+        "description": "Sign in to your RenOS workspace with your company account.",
+        "hero": {"eyebrow": "Log In", "h1": "Log In to RenOS",
+                 "lede": 'Sign in to your workspace. Your role and policies come with your company account. Trouble signing in? <a href="/contact">Contact us</a>.',
+                 "visual": "portal"},
+        "sections": [], "cta": False,
     })
 
     # ---------------- 404

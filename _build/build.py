@@ -149,12 +149,15 @@ def sc_workspace():
 <div><p class="ui-label">Agents at Work</p><ul class="ui-list">{ag}</ul></div></div>''', "Chat · Builder · Agent", wide=True)
 
 
-def sc_task():
+def sc_task(hold=False):
+    cost = ([("Estimated cost", "About 420 credits" + (" ($4.20)" if C.SHOW_PRICES else "")),
+             ("Hold placed", "Client operations · within its budget")] if hold else
+            [("Estimated cost", "Checked before it runs"), ("Budget", "Client operations · within cap")])
     return ui("Agent · Intake Summaries", '''<p class="ui-muted">Client operations</p>
 <p class="ui-prompt">Summarize these 12 client intake forms and flag missing insurance details.</p>
 <div class="ui-route"><p><span class="dot"></span><strong>Routed to an approved model</strong> <span class="ui-tag">Approved supply</span></p>
 <p class="ui-muted">Why: the forms contain personal client data. Your policy allows approved models only, and this task needs long-document reasoning.</p></div>
-''' + ui_rows([("Estimated cost", "Checked before it runs"), ("Budget", "Client operations · within cap")]) + ui_btns("Run Task"), "Agent Mode")
+''' + ui_rows(cost) + ui_btns("Run Task"), "Agent Mode")
 
 
 def sc_budgets():
@@ -173,11 +176,12 @@ def sc_supply():
 <p class="ui-foot"><span class="dot dot--green"></span>Your own model keys · connected on Enterprise</p>''', "Policy: Sensitive Data")
 
 
-def sc_audit():
+def sc_audit(credits=False):
+    cost = ("398 credits" + (" · $3.98" if C.SHOW_PRICES else "")) if credits else "Recorded in the admin view"
     return ui("Audit Record · Task A-20931", ui_rows([
         ("When", "Oct 14 · 10:42"), ("Who", "Client operations"), ("Mode", "Agent mode, 3 rounds"),
         ("Model", "Approved model"), ("Policy", "Personal data requires approved models"),
-        ("Cost", "Recorded in the admin view"), ("Overrides", "None")]) +
+        ("Cost", cost), ("Overrides", "None")]) +
         '<p class="ui-foot">Kept 90 days on Pro · one year or more on Enterprise</p>' + ui_btns("Export Record"), "Exportable")
 
 
@@ -187,6 +191,41 @@ def sc_limit():
               '''<div class="ui-route"><p class="ui-muted">Sent to the budget owner</p><p><strong>Approve a one-time increase for Finance?</strong></p>''' +
               ui_btns("Approve", "Decline") + '''</div>
 <p class="ui-foot"><span class="dot dot--amber"></span>Agent run stopped at its per-task ceiling after 7 rounds</p>''', "Finance · At Cap")
+
+
+def sc_buy():
+    priced = C.SHOW_PRICES
+    chips = (["$50", "$100", "$250", "$500", "Custom"] if priced else ["5,000", "10,000", "25,000", "50,000", "Custom"])
+    chip_html = "".join(f'<span{" class=is-on" if i == 2 else ""}>{e(c)}</span>' for i, c in enumerate(chips))
+    return ui("Billing · RenOS Credits", f'''<p class="ui-label">Current Balance</p>
+<p class="ui-big">18,420 credits</p><p class="ui-muted">{"$184.20 · " if priced else ""}About 9 days at your current usage</p>
+<p class="ui-label">Add Credits</p><div class="ui-chips ui-chips--pick">{chip_html}</div>
+<p class="ui-muted">{"= 25,000 credits · 1 credit = $0.01" if priced else "25,000 credits selected"}</p>''' +
+              ui_rows([("Auto top-up", ("$250 when the balance drops below $50 · On" if priced else "When the balance runs low · On")),
+                       ("Pay by", "Card, or invoice on Enterprise")]) +
+              ui_btns("Add $250 of Credits" if priced else "Add Credits"))
+
+
+def sc_settle():
+    priced = C.SHOW_PRICES
+    lines = [("Input", "612,000 tokens", "× $5.00/M", "306 cr"), ("Output", "34,800 tokens", "× $25.00/M", "87 cr"),
+             ("Cached input", "100,000 tokens", "× $0.50/M", "5 cr")]
+    tr = "".join(f"<tr><td>{e(a)}</td><td>{e(b)}{' ' + e(c) if priced else ''}</td><td class=num>{e(d)}</td></tr>" for a, b, c, d in lines)
+    return ui("Usage Settled · Task A-20931", f'''<table class="ui-table"><tbody>{tr}</tbody></table>''' +
+              ui_rows([("Charged for actual usage", "398 credits" + (" · $3.98" if priced else "")),
+                       ("Hold 420, charged 398", "+22 credits released"), ("New balance", "18,022 credits")]), "2m 14s")
+
+
+def sc_portal():
+    app = C.APP_URL.rstrip("/")
+    return f'''<div class="ui portal"><div class="ui-top"><span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ui-title">Sign In</span></div>
+<div class="ui-body"><div class="ui-center"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>RenOS</span>
+<p class="ui-muted">One governed workspace for every model.</p>
+<p class="ui-h">Sign in with your company account</p>
+<p class="ui-muted">Your role and policies are already set by your admin. There is nothing to configure.</p>
+<a class="btn btn--primary portal-btn" href="{app}/login">Continue to Sign In</a>
+<a class="btn btn--ghost portal-btn" href="/contact">New to RenOS? Book a Demo</a>
+<p class="ui-foot"><span class="dot dot--green" aria-hidden="true"></span>Every task is logged for your organization</p></div></div></div>'''
 
 
 def sc_oversight():
@@ -205,7 +244,9 @@ def sc_oversight():
 
 
 SHOWCASES = {"signin": sc_signin, "workspace": sc_workspace, "task": sc_task, "budgets": sc_budgets,
-             "supply": sc_supply, "audit": sc_audit, "limit": sc_limit, "oversight": sc_oversight}
+             "supply": sc_supply, "audit": sc_audit, "limit": sc_limit, "oversight": sc_oversight,
+             "buy": sc_buy, "settle": sc_settle, "portal": sc_portal,
+             "task-hold": lambda: sc_task(hold=True), "audit-credits": lambda: sc_audit(credits=True)}
 
 
 def visual(v, alt=""):
@@ -426,7 +467,7 @@ def nav():
 <a class="brand" href="/" aria-label="RenOS home"><span class="brand-mark" aria-hidden="true"></span>RenOS</a>
 <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span></button>
 <div class="nav-menu" id="nav-menu"><div class="nav-groups">{"".join(groups)}</div>
-<div class="nav-actions"><a class="nav-sales" href="/contact">Talk to Sales</a>{btn("Start a Pilot", "/pilot", "primary", "sm")}</div></div>
+<div class="nav-actions"><a class="nav-sales" href="/login">Log In</a><a class="nav-sales" href="/contact">Talk to Sales</a>{btn("Start a Pilot", "/pilot", "primary", "sm")}</div></div>
 </nav></header>'''
 
 
