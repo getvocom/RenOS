@@ -96,8 +96,7 @@
         .then(function (r) {
           if (!r.ok) throw new Error(r.status);
           form.reset();
-          status.classList.remove('is-warn');
-          status.textContent = "Thanks. We'll be in touch within one business day.";
+          window.location.href = '/thanks';
         })
         .catch(function () {
           status.classList.add('is-warn');

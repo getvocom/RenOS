@@ -54,6 +54,8 @@ def section_head(s):
         out.append(f'<h2 class="section-title">{e(s["h2"])}</h2>')
     if s.get("lede"):
         out.append(f'<p class="section-lede">{s["lede"]}</p>')
+    if s.get("sr_h2") and not s.get("h2"):
+        out.append(f'<h2 class="sr-only">{e(s["sr_h2"])}</h2>')
     return f'<header class="section-head">{"".join(out)}</header>' if out else ""
 
 
@@ -164,7 +166,7 @@ def sc_budgets():
     teams = [("Client operations", "62%", "On track"), ("Front desk", "38%", "On track"), ("Finance", "91%", "Near cap")]
     bars = "".join(f'<div class="ui-meter"><div><strong>{e(n)}</strong><span>{e(s)}</span></div><i style="--w:{w}"{" class=hot" if s == "Near cap" else ""}></i></div>' for n, w, s in teams)
     return ui("Budgets and Spend Caps", f'''<p class="ui-muted">This month, by team</p>{bars}
-''' + ui_rows([("Alerts", "Admins hear as each team nears its cap"), ("Agent mode", "Each task stops at its own ceiling"),
+''' + ui_rows([("Alerts", "At 50, 80 and 100% of each cap"), ("Agent mode", "Each task stops at its own ceiling"),
                ("At the cap", "Work pauses · owners can approve more")]) + ui_btns("Save Budgets"))
 
 
@@ -220,12 +222,11 @@ def sc_portal():
     app = C.APP_URL.rstrip("/")
     return f'''<div class="ui portal"><div class="ui-top"><span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ui-title">Sign In</span></div>
 <div class="ui-body"><div class="ui-center"><span class="brand"><span class="brand-mark" aria-hidden="true"></span>RenOS</span>
-<p class="ui-muted">One governed workspace for every model.</p>
-<p class="ui-h">Sign in with your company account</p>
-<p class="ui-muted">Your role and policies are already set by your admin. There is nothing to configure.</p>
+<p class="ui-h">Sign In to RenOS</p>
+<p class="ui-muted">Use your work account. We'll never post anything.</p>
 <a class="btn btn--primary portal-btn" href="{app}/login">Continue to Sign In</a>
-<a class="btn btn--ghost portal-btn" href="/contact">New to RenOS? Book a Demo</a>
-<p class="ui-foot"><span class="dot dot--green" aria-hidden="true"></span>Every task is logged for your organization</p></div></div></div>'''
+<p class="ui-muted">New here? <a href="/pilot">Book a pilot</a> to get started.</p>
+<p class="ui-foot"><span class="dot dot--green" aria-hidden="true"></span>Every session is logged for your organization</p></div></div></div>'''
 
 
 def sc_oversight():
@@ -243,7 +244,42 @@ def sc_oversight():
 <p class="ui-label">Needs Attention</p><ul class="ui-attn">{li}</ul>''', "Admin", wide=True)
 
 
-SHOWCASES = {"signin": sc_signin, "workspace": sc_workspace, "task": sc_task, "budgets": sc_budgets,
+def sc_routing():
+    rows_ = [("Open model", "", "On-prem", "No credit cost · medium", ""),
+             ("Frontier model A", "", "Direct · cloud", "Highest · medium", ""),
+             ("Frontier model B", "lock", "Vocom · cloud", "Not on Confidential allow-list", "hot"),
+             ("Model C via reseller", "lock", "Vocom · cloud", "Blocked: unverified supplier", "hot")]
+    tr = "".join(f'<tr{" class=is-locked" if l else ""}><td>{"<span class=ui-lock></span>" if l else ""}{e(m)}</td><td>{e(r)}</td><td>{e(c)}</td></tr>'
+                 for m, l, r, c, _ in rows_)
+    return ui("Routing · Confidential Task", f'''<div class="ui-chips ui-chips--pick"><span class=is-on>Auto</span><span>Models</span><span>Local</span><span class="ui-tag">Confidential task</span></div>
+<table class="ui-table"><thead><tr><th>Model</th><th>Route</th><th>Cost · speed</th></tr></thead><tbody>{tr}</tbody></table>
+<p class="ui-foot">Only models your policy allows for this task are selectable. Locked rows show why.</p>''', "Auto", wide=True)
+
+
+def sc_rule():
+    def chips(xs):
+        return "".join(f'<span class="ui-tag">{e(x)}</span>' for x in xs)
+    sim = ["0 conflicts with existing rules", "0 gaps for Confidential", '1 stale rule: "No unverified suppliers" (0 hits)',
+           "Would not block more than 5% of traffic"]
+    li = "".join(f"<li>{e(x)}</li>" for x in sim)
+    rule = (f'<div class="ui-when"><p class="ui-label">When</p>{chips(["source = patient-records drive", "sensitivity = Confidential"])}</div>'
+            f'<div class="ui-when"><p class="ui-label">Then</p>{chips(["allow approved or local models", "deny unverified suppliers", "log the exception"])}</div>'
+            '<p class="ui-foot">Classifier may raise sensitivity, never lower it.</p>')
+    simulator = (f'<ul class="ui-attn ui-attn--ok">{li}</ul>'
+                 '<p class="ui-foot">Lint and simulation are deterministic. No model grades its own policy.</p>')
+    return (f'<div class="rule-demo" aria-hidden="true">{ui("Policy · Confidential Stays Approved", rule, "Draft")}'
+            f'{ui("Simulator · Last 30 Days", simulator, "Ready to Publish")}</div>')
+
+
+def sc_receipt():
+    priced = C.SHOW_PRICES
+    rows_ = [("Session", "Rent-increase notice"), ("Model", "Frontier model (approved)"), ("Tokens in / out", "1,840 / 620"),
+             ("Credits used", "1.2")] + ([("Cost", "$0.012")] if priced else []) + [
+             ("Policy", "Confidential stays approved"), ("Chain", "Sealed · intact")]
+    return ui("Metering Receipt", ui_rows(rows_) + '<p class="ui-foot">Illustrative receipt.</p>', "Per call")
+
+
+SHOWCASES = {"routing": sc_routing, "rule": sc_rule, "receipt": sc_receipt, "signin": sc_signin, "workspace": sc_workspace, "task": sc_task, "budgets": sc_budgets,
              "supply": sc_supply, "audit": sc_audit, "limit": sc_limit, "oversight": sc_oversight,
              "buy": sc_buy, "settle": sc_settle, "portal": sc_portal,
              "task-hold": lambda: sc_task(hold=True), "audit-credits": lambda: sc_audit(credits=True)}
@@ -262,8 +298,11 @@ def visual(v, alt=""):
         return visual(v.get("fallback"), alt)
     if v == "globe":
         return f'''<div class="hero-visual" aria-hidden="true">{globe()}
-<div class="float-card float-card--rationale"><p class="float-label">ROUTING RATIONALE</p><p class="float-text">Confidential tenant data, so policy sent this task to an approved model.</p></div>
-<div class="float-card float-card--session"><span class="pill pill--light"><span class="dot dot--green"></span>Audit entry written</span><p class="float-meta">who · task · model · policy · result</p></div></div>'''
+<div class="float-card float-card--rationale"><p class="float-label">ROUTING RATIONALE</p><p class="float-text">Confidential tenant data, so policy sent this task to an approved frontier model under the data residency rule.</p></div>
+<div class="float-card float-card--session"><span class="pill pill--light"><span class="dot dot--green"></span>Governed session GS-20418</span><p class="float-meta">Logged automatically · chain intact</p></div></div>'''
+    if v == "globe-labels":
+        tags = "".join(f'<span class="globe-tag globe-tag--{i}">{t}</span>' for i, t in enumerate(["Policy", "Models", "Audit Trail", "Crews"]))
+        return f'<div class="hero-visual hero-visual--ring" aria-hidden="true">{globe()}{tags}</div>'
     if isinstance(v, list):
         return panel(v)
     return ""
@@ -277,13 +316,20 @@ def hero(s, crumbs_html):
         h1 += f' <span class="gradient-text">{e(s["h1_accent"])}</span>'
     buttons = "".join(btn(*b) for b in s.get("buttons", []))
     proof = "".join(f'<li class="pill"><span class="dot dot--green"></span>{e(p)}</li>' for p in s.get("proof", []))
-    vis = visual(s.get("visual"), s.get("visual_alt", ""))
+    vis = form(s["form"]) if s.get("form") else visual(s.get("visual"), s.get("visual_alt", ""))
     grid = "hero-grid" if vis else "hero-grid hero-grid--solo"
+    if s.get("center"):
+        grid = "hero-grid hero-grid--center"
+    if s.get("form"):
+        grid += " hero-grid--form"
+    aside = "".join(f'<article class="card hero-aside"><h2>{e(t)}</h2><p>{d}</p></article>' for t, d in s.get("aside", []))
+    pill = f'<span class="pill pill--cyan"><span class="dot"></span>{e(s["eyebrow"])}</span>' if s.get("eyebrow") else ""
+    mark = '<span class="done-mark" aria-hidden="true"></span>' if s.get("center") else ""
     return f'''<section class="hero">{crumbs_html}<div class="container {grid}"><div class="hero-copy">
-<span class="pill pill--cyan"><span class="dot"></span>{e(s["eyebrow"])}</span>
+{mark}{pill}
 <h1 class="hero-title">{h1}</h1><p class="hero-lede">{s["lede"]}</p>
 {f'<div class="hero-actions">{buttons}</div>' if buttons else ''}
-{f'<ul class="hero-proof">{proof}</ul>' if proof else ''}</div>{vis}</div></section>'''
+{f'<ul class="hero-proof">{proof}</ul>' if proof else ''}{f'<div class="hero-asides">{aside}</div>' if aside else ''}</div>{vis}</div></section>'''
 
 
 def cards(s):
@@ -303,8 +349,20 @@ def cards(s):
         demo = ""
         if c.get("demo"):
             demo = f'<div class="step-demo"><span class="pill pill--accent"><span class="dot"></span>{e(c["demo"][0])}</span><p class="step-demo-text">{e(c["demo"][1])}</p></div>'
+        if c.get("avatar"):
+            top = '<span class="avatar" aria-hidden="true"></span>'
+        if c.get("plain"):
+            top = ""
+        h3 = f'<h3>{e(c["title"])}</h3>'
+        if c.get("tag"):
+            h3 = f'<div class="card-head">{h3}<span class="ui-badge">{e(c["tag"])}</span></div>'
+        meta = f'<p class="card-meta">{e(c["meta"])}</p>' if c.get("meta") else ""
+        example = f'<p class="card-example">{e(c["example"])}</p>' if c.get("example") else ""
+        dl = ('<dl class="card-dl">' + "".join(f"<dt>{e(k)}</dt><dd>{e(v)}</dd>" for k, v in c["dl"]) + "</dl>") if c.get("dl") else ""
+        rule = "".join(f'<p class="rule-step"><span class="ui-tag">{e(k)}</span>{e(v)}</p>' for k, v in c.get("rule", []))
+        text = f'<p>{c["text"]}</p>' if c.get("text") else ""
         items.append(f'<{tag} class="card capability{" card--link" if href else ""}"{href}{accent}>{top}'
-                     f'<h3>{e(c["title"])}</h3>{quote}<p>{c.get("text", "")}</p>{demo}{more}</{tag}>')
+                     f'{h3}{meta}{quote}{text}{rule}{example}{dl}{demo}{more}</{tag}>')
     return f'<div class="grid-{cols}">{"".join(items)}</div>'
 
 
@@ -317,6 +375,11 @@ def rows(s):
 <h3>{e(r["title"])}</h3><p>{r["text"]}</p>{f'<ul class="feature-list">{bullets}</ul>' if bullets else ''}{link}</div>
 <div class="feature-visual">{visual(r.get("visual"), r["title"])}</div></div>''')
     return "".join(out)
+
+
+def stats(s):
+    items = "".join(f'<div class="card stat"><p class="stat-num">{e(n)}</p><p class="stat-label">{e(l)}</p></div>' for n, l in s["items"])
+    return f'<div class="grid-{s.get("cols", 4)} stats">{items}</div>'
 
 
 def chips(s):
@@ -408,11 +471,14 @@ def form(s):
             opts = "".join(f'<option value="{v}">{e(t)}</option>' for v, t in f[4])
             ctl = f'<select id="{fid}" name="{name}"{req}>{opts}</select>'
         elif kind == "textarea":
-            ctl = f'<textarea id="{fid}" name="{name}" rows="4"{req}></textarea>'
+            ph = f' placeholder="{e(f[5])}"' if len(f) > 5 else ""
+            ctl = f'<textarea id="{fid}" name="{name}" rows="4"{ph}{req}></textarea>'
         else:
             auto = {"email": "email", "name": "name", "company": "organization"}.get(name, "off")
-            ctl = f'<input id="{fid}" name="{name}" type="{kind}" autocomplete="{auto}"{req}>'
-        fields.append(f'<div class="field{" field--wide" if kind == "textarea" else ""}"><label for="{fid}">{e(label)}</label>{ctl}</div>')
+            ph = f' placeholder="{e(f[5])}"' if len(f) > 5 else ""
+            ctl = f'<input id="{fid}" name="{name}" type="{kind}" autocomplete="{auto}"{ph}{req}>'
+        wide = kind == "textarea" or s.get("stack")
+        fields.append(f'<div class="field{" field--wide" if wide else ""}"><label for="{fid}">{e(label)}</label>{ctl}</div>')
     action = C.FORM_ENDPOINT
     return f'''<form class="card lead-form" method="post" action="{action or "#"}" data-endpoint="{"1" if action else ""}">
 <div class="form-grid">{"".join(fields)}</div>
@@ -425,7 +491,7 @@ def toc(s):
         f'<li><a href="#{a}">{e(t)}</a></li>' for a, t in s["items"]) + "</ol></nav>"
 
 
-RENDER = {"cards": cards, "rows": rows, "chips": chips, "faq": faq, "prose": prose,
+RENDER = {"visual": lambda s: visual(s["visual"]), "stats": stats, "cards": cards, "rows": rows, "chips": chips, "faq": faq, "prose": prose,
           "pricing": pricing, "form": form, "toc": toc, "flow": flow, "compare": compare}
 
 
@@ -435,16 +501,20 @@ def section(s):
     if kind == "split":
         return f'<section class="section"{sid}><div class="container">{split(s)}</div></section>'
     if kind == "problems":
-        return f'<section class="problems"{sid} aria-label="The problem"><div class="container">{cards({**s, "icons": False})}</div></section>'
+        return f'<section class="problems"{sid}><div class="container">{section_head(s)}{cards({**s, "icons": False})}</div></section>'
     body = RENDER[kind](s)
+    if s.get("foot"):
+        body += f'<p class="section-foot">{s["foot"]}</p>'
+    if s.get("after"):
+        body += RENDER[s["after"]["type"]](s["after"])
     return f'<section class="section{" section--tight" if s.get("tight") else ""}"{sid}><div class="container">{section_head(s)}{body}</div></section>'
 
 
 def cta_band(c):
     return f'''<section class="cta" id="cta"><div class="container"><div class="cta-panel">
-<h2>{e(c.get("h2", "See RenOS Run on Your Own Work"))}</h2>
-<p>{c.get("text", "Bring one real task. We'll route it live, with the routing rationale and audit trail included.")}</p>
-<div class="hero-actions hero-actions--center">{btn("Book a Demo", "/contact", "primary", "lg")}{btn("Start a Pilot", "/pilot", "ghost", "lg")}</div>
+<h2>{e(c.get("h2", "Start With One Pilot Team"))}</h2>
+<p>{c.get("text", "See governed sessions in your own workflow within days, not quarters.")}</p>
+<div class="hero-actions hero-actions--center">{btn(*c.get("button", ("Book a Pilot", "/pilot")), "primary", "lg")}</div>
 </div></div></section>'''
 
 
@@ -467,7 +537,7 @@ def nav():
 <a class="brand" href="/" aria-label="RenOS home"><span class="brand-mark" aria-hidden="true"></span>RenOS</a>
 <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span></button>
 <div class="nav-menu" id="nav-menu"><div class="nav-groups">{"".join(groups)}</div>
-<div class="nav-actions"><a class="nav-sales" href="/login">Log In</a><a class="nav-sales" href="/contact">Talk to Sales</a>{btn("Start a Pilot", "/pilot", "primary", "sm")}</div></div>
+<div class="nav-actions"><a class="nav-sales" href="/login">Sign In</a>{btn("Book a Pilot", "/pilot", "primary", "sm")}</div></div>
 </nav></header>'''
 
 
@@ -478,8 +548,8 @@ def footer():
         for h, links in C.FOOTER)
     return f'''<footer class="site-footer"><div class="container">
 <div class="footer-top"><div class="footer-brand"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>RenOS</a>
-<p>{e(C.FACTS["tagline"])}. {e(C.FACTS["status"])}.</p></div><div class="footer-cols">{cols}</div></div>
-<div class="footer-row"><span>RenOS is from <a href="https://www.vocom.ai">Vocom AI</a></span><span class="footer-rule" aria-hidden="true"></span><span>© 2026 Vocom AI</span></div>
+<p>{e(C.FACTS["footer"])}</p></div><div class="footer-cols">{cols}</div></div>
+<div class="footer-row"><span>RenOS · Ren Group · Model credits supplied by <a href="https://www.vocom.ai">Vocom</a></span><span class="footer-rule" aria-hidden="true"></span><span>© 2026 Ren Group</span></div>
 </div></footer>'''
 
 
@@ -524,7 +594,7 @@ def page_html(page):
         graph += [
             {"@type": "Organization", "name": "RenOS", "url": SITE,
              "logo": SITE + "/assets/og-image.png",
-             "parentOrganization": {"@type": "Organization", "name": "Vocom AI", "url": "https://www.vocom.ai"}},
+             "parentOrganization": {"@type": "Organization", "name": "Ren Group", "url": SITE}},
             {"@type": "WebSite", "name": "RenOS", "url": SITE}]
     if page.get("software"):
         graph.append({"@type": "SoftwareApplication", "name": page.get("software_name", "RenOS"),

@@ -10,18 +10,19 @@ from stars import STARS  # noqa: F401
 # the forms then tell visitors nothing was sent instead of failing silently.
 FORM_ENDPOINT = ""
 
-# Prices from the pricing design are not yet cleared for public use.
-# Set to True once they're approved; every card, table and FAQ then shows the figures.
-SHOW_PRICES = False
+# Prices and dollar figures from the Atlas design. Set to False to hide every
+# price on the site (cards, tables, receipts and FAQs fall back to "Talk to Sales").
+SHOW_PRICES = True
 
-# Where the RenOS app lives. The website's Log In page hands off to {APP_URL}/login.
+# Where the RenOS app lives. The website's Sign In page hands off to {APP_URL}/login.
 # Planned address once DNS and HTTPS (nginx) are set up on the app server.
 APP_URL = "https://app.rengroup.ai"
 
 # Single source of truth for facts reused across pages.
 FACTS = {
-    "tagline": "The AI Operating System for Teams",
-    "status": "Design-partner pilots are open",
+    "tagline": "The Governance Layer for AI at Work",
+    "footer": "The governance layer for AI at work. Use every model, and prove what each one did.",
+    "status": "Pilots are open",
     "pilot_days": 60,
     "pilot_seats": 15,
     "free_seats": "Admin, auditor and read-only compliance seats are always free.",
@@ -32,14 +33,14 @@ CYAN, VIOLET, GREEN, AMBER, PINK, BLUE = "#5ee0ff", "#8f80f7", "#5fd0a0", "#f2b4
 ACCENTS = [CYAN, VIOLET, GREEN, AMBER, PINK, BLUE]
 
 MODES = [
-    ("Chat Mode", "/product/chat", "Ask in plain language. Policy picks the model."),
-    ("Builder Mode", "/product/builder", "Work with more than one model side by side."),
-    ("Agent Mode", "/product/agents", "Several agents, each with its own identity, on one task."),
+    ("Chat Mode", "/product/chat", "An answer, a draft or a thinking partner. Lowest cost."),
+    ("Builder Mode", "/product/builder", "A finished thing: a doc, app, report or workflow. Plan first."),
+    ("Agent Mode", "/product/agents", "Something done or watched in other systems. Always capped."),
 ]
 FEATURES = [
     ("Policy Routing", "/product/routing", "Your rules pick the model before anything is sent."),
     ("Audit Trail", "/product/audit-trail", "Every task writes a record anyone can read."),
-    ("Admin Dashboard", "/product/admin", "Spend, policy and access in one place."),
+    ("Admin Dashboard", "/product/admin", "Sessions, cost and policy activity in one place."),
     ("Supported AI Models", "/models", "Hundreds of models, one governed workspace."),
     ("How Credits Work", "/product/credits", "From top-up to audit record, step by step."),
 ]
@@ -48,7 +49,7 @@ FEATURES = [
 
 TEAMS = [
     {
-        "slug": "sales", "name": "Sales", "accent": CYAN,
+        "slug": "sales", "menu": "Faster outreach, clear records", "name": "Sales", "accent": CYAN,
         "title": "AI for Sales Teams: Faster Outreach, Clear Records",
         "description": "AI for sales teams that drafts and researches on approved models, handles customer data by policy and keeps a record of outreach. Start a pilot.",
         "h1": "AI for Sales Teams, With a Record of Every Message",
@@ -71,7 +72,7 @@ TEAMS = [
         ],
     },
     {
-        "slug": "compliance", "showcase": "audit", "name": "Compliance", "accent": VIOLET,
+        "slug": "compliance", "menu": "Evidence without interviews", "showcase": "audit", "name": "Compliance", "accent": VIOLET,
         "title": "AI Governance for Compliance Teams, Without Interviews",
         "description": "AI governance for compliance teams: free auditor seats, evidence of every AI task without interviewing staff, and rule changes that apply next task.",
         "h1": "AI Governance for Compliance Teams That Need Evidence",
@@ -95,9 +96,9 @@ TEAMS = [
         ],
     },
     {
-        "slug": "it", "showcase": "signin", "name": "IT and Security", "accent": BLUE,
+        "slug": "it", "menu": "Models, access and SSO in one place", "showcase": "signin", "name": "IT and Security", "accent": BLUE,
         "title": "AI System Administration for IT Teams | RenOS",
-        "description": "AI system administration for IT teams: approve models and suppliers in one place, add SSO and SCIM on Enterprise, and deploy privately. Book a demo.",
+        "description": "AI system administration for IT teams: approve models and suppliers in one place, add SSO and SCIM on Enterprise, and deploy privately. Book a pilot.",
         "h1": "AI System Administration Without the Sprawl",
         "intro": "IT teams end up owning AI whether they planned to or not. RenOS gives you one place for AI system administration: which models and suppliers are allowed, for which data, for which roles.",
         "pains": [
@@ -118,7 +119,7 @@ TEAMS = [
         ],
     },
     {
-        "slug": "operations", "showcase": "workspace", "name": "Operations", "accent": GREEN,
+        "slug": "operations", "menu": "Everyday work your team can run", "showcase": "workspace", "name": "Operations", "accent": GREEN,
         "title": "AI for Work: Task Automation for Operations Teams",
         "description": "AI for work that operations teams can run: Chat and Builder for daily tasks, agents for repeat workflows, and no extra steps for staff. Start a pilot.",
         "h1": "AI for Work That Your Operations Team Can Run Every Day",
@@ -141,9 +142,9 @@ TEAMS = [
         ],
     },
     {
-        "slug": "leadership-coaching", "name": "Leadership and Coaching", "accent": PINK,
+        "slug": "leadership-coaching", "menu": "Coaching AI with guardrails", "name": "Leadership and Coaching", "accent": PINK,
         "title": "Leadership Coaching AI With Clear Guardrails | RenOS",
-        "description": "Leadership coaching AI for leaders and coaches: governed coaching workflows, private notes kept by policy, and a record of every session. Book a demo.",
+        "description": "Leadership coaching AI for leaders and coaches: governed coaching workflows, private notes kept by policy, and a record of every session. Book a pilot.",
         "h1": "Leadership Coaching AI You Can Trust With Real Conversations",
         "intro": "AI in coaching works best when people trust where their words go. RenOS lets leaders and coaches use AI for preparation, reflection and follow-up, with policy deciding which models see sensitive notes.",
         "pains": [
@@ -164,9 +165,9 @@ TEAMS = [
         ],
     },
     {
-        "slug": "finance", "showcase": "budgets", "name": "Finance", "accent": AMBER,
+        "slug": "finance", "menu": "Spend control down to the task", "showcase": "budgets", "name": "Finance", "accent": AMBER,
         "title": "AI Spend Control and Cost per Task for Finance Teams",
-        "description": "AI spend control for finance teams: one bill instead of many subscriptions, per-team spend caps, and the cost of every AI task in one view. Book a demo.",
+        "description": "AI spend control for finance teams: one bill instead of many subscriptions, per-team spend caps, and the cost of every AI task in one view. Book a pilot.",
         "h1": "AI Spend Control Down to the Cost of Each Task",
         "intro": "AI spend control is hard when every team expenses its own tool. RenOS puts AI on one workspace, caps spend per team, and shows the cost of each task in the admin view.",
         "pains": [
@@ -194,9 +195,10 @@ TEAMS = [
 
 INDUSTRIES = [
     {
-        "slug": "dental-groups", "name": "Dental Groups", "accent": CYAN,
+        "slug": "dental-groups", "name": "Dental Groups",
+        "rule": ("Patient Records Stay Approved", "Source is the patient-records drive", "Allow approved or local models only. Log every override."), "accent": CYAN,
         "title": "AI for Dental Groups: Governed AI Across Locations",
-        "description": "AI for dental groups and multi-location practices: keep patient work on approved models, see every location in one view, and show compliance. Book a demo.",
+        "description": "AI for dental groups and multi-location practices: keep patient work on approved models, see every location in one view, and show compliance. Book a pilot.",
         "h1": "AI for Dental Groups, Governed Across Every Location",
         "intro": "Front desk, billing and insurance teams are already using AI. RenOS gives dental groups and multi-location practices one governed workspace, so patient-identifiable work stays on approved models and compliance can see what happened.",
         "pains": [
@@ -219,9 +221,10 @@ INDUSTRIES = [
         ],
     },
     {
-        "slug": "credit-unions", "name": "Credit Unions", "accent": VIOLET,
+        "slug": "credit-unions", "name": "Credit Unions",
+        "rule": ("Lending Answers Cite the Policy", "Topic is lending policy", "Answer only from the current policy document, and cite the section."), "accent": VIOLET,
         "title": "AI for Credit Unions: Inventory, Policy and Evidence",
-        "description": "AI for credit unions: one inventory of every AI tool and model, vendor choices set by policy and logged, and exportable evidence for exams. Book a demo.",
+        "description": "AI for credit unions: one inventory of every AI tool and model, vendor choices set by policy and logged, and exportable evidence for exams. Book a pilot.",
         "h1": "AI for Credit Unions That Already Have the Mandate",
         "intro": "Credit unions are being asked to show oversight of AI and the vendors behind it. RenOS gives compliance, risk and lending teams one governed workspace with an inventory, policy and evidence built in.",
         "pains": [
@@ -244,7 +247,7 @@ INDUSTRIES = [
     {
         "slug": "real-estate", "name": "Real Estate Brokerages", "accent": AMBER,
         "title": "AI for Real Estate Brokerages, With Proof of Policy",
-        "description": "AI for real estate brokerages: one policy across agents and offices, governed buyer messages, and an audit trail for each AI-assisted text. Book a demo.",
+        "description": "AI for real estate brokerages: one policy across agents and offices, governed buyer messages, and an audit trail for each AI-assisted text. Book a pilot.",
         "h1": "AI for Real Estate Brokerages That Want Proof, Not Promises",
         "intro": "Agents use AI for listing copy, lead follow-up and buyer texts. RenOS lets brokerages show that every AI-assisted listing and conversation followed the same policy.",
         "pains": [
@@ -265,7 +268,8 @@ INDUSTRIES = [
         ],
     },
     {
-        "slug": "property-management", "name": "Property Management", "accent": GREEN,
+        "slug": "property-management", "name": "Property Management",
+        "rule": ("Rent Notices Need a Manager", "Draft is a rent-increase notice", "Require manager approval before sending."), "accent": GREEN,
         "title": "AI for Property Management: Fair, Documented Messages",
         "description": "AI for property management: policy and an audit trail across tenant and prospect messages, plus private deployment for tenant data. Start a 60-day pilot.",
         "h1": "AI for Property Management That Shows Fair Treatment",
@@ -290,7 +294,7 @@ INDUSTRIES = [
     {
         "slug": "professional-services", "name": "Professional Services", "accent": BLUE,
         "title": "AI for Professional Services Firms: Per-Matter Records",
-        "description": "AI for professional services firms: route privileged work to approved models, keep a per-matter audit record, and govern every tool at once. Book a demo.",
+        "description": "AI for professional services firms: route privileged work to approved models, keep a per-matter audit record, and govern every tool at once. Book a pilot.",
         "h1": "AI for Professional Services Firms, Matter by Matter",
         "intro": "Law, accounting and tax firms need to show clients which systems touched their work and under what policy. RenOS routes privileged work to approved models and keeps the record per matter.",
         "pains": [
@@ -313,7 +317,7 @@ INDUSTRIES = [
     {
         "slug": "insurance", "name": "Insurance and Financial Services", "accent": PINK,
         "title": "AI for Insurance and Financial Services Firms | RenOS",
-        "description": "AI for insurance and financial services: model and supplier provenance logged per task, policy by data sensitivity, and exportable records. Book a demo.",
+        "description": "AI for insurance and financial services: model and supplier provenance logged per task, policy by data sensitivity, and exportable records. Book a pilot.",
         "h1": "AI for Insurance and Financial Services, Ready for the Question",
         "intro": "Sooner or later, someone will ask where your AI outputs came from. RenOS logs model and supplier provenance for every task, so insurers and financial firms already have the answer.",
         "pains": [
@@ -336,7 +340,7 @@ INDUSTRIES = [
     {
         "slug": "fintech", "name": "Fintech", "accent": CYAN,
         "title": "AI for Fintech Teams: Budgets, Reviews and Records",
-        "description": "AI for fintech teams: budget caps enforced per agent and team, every human review logged, and vendor-neutral governance across models. Book a demo.",
+        "description": "AI for fintech teams: budget caps enforced per agent and team, every human review logged, and vendor-neutral governance across models. Book a pilot.",
         "h1": "AI for Fintech Teams Moving Faster Than Their Controls",
         "intro": "Fintech teams adopt AI quickly, and the controls lag behind. RenOS enforces budgets per agent and team, logs who reviewed what, and works across clouds and models.",
         "pains": [
@@ -359,7 +363,7 @@ INDUSTRIES = [
     {
         "slug": "telecom", "name": "Telecom", "accent": AMBER,
         "title": "AI for Telecom: Customer Data on Your Infrastructure",
-        "description": "AI for telecom care and network teams: keep customer network data in a private deployment, with policy and audit across operations. Book a demo.",
+        "description": "AI for telecom care and network teams: keep customer network data in a private deployment, with policy and audit across operations. Book a pilot.",
         "h1": "AI for Telecom Teams That Handle Customer Network Data",
         "intro": "Care and network operations teams handle data that carries real obligations. RenOS keeps that data in a private deployment on infrastructure you control, with policy and audit across every team.",
         "pains": [
@@ -382,7 +386,7 @@ INDUSTRIES = [
     {
         "slug": "msps", "menu": "Governed AI as a managed service", "name": "MSPs and IT Partners", "accent": VIOLET,
         "title": "AI for MSPs: Governed AI as a Managed Service",
-        "description": "AI for MSPs: add governed AI as a service line next to security and compliance, with one admin view across clients and no mixing of data. Book a demo.",
+        "description": "AI for MSPs: add governed AI as a service line next to security and compliance, with one admin view across clients and no mixing of data. Book a pilot.",
         "h1": "AI for MSPs Ready to Offer Governed AI",
         "intro": "Your clients' staff are already pasting data into free AI tools. RenOS lets MSPs offer governed AI as a managed service, with one admin view across clients and each client's data kept separate.",
         "pains": [
@@ -408,43 +412,33 @@ INDUSTRIES = [
 
 NAV = [
     ("Product", [
-        ("Platform", [("Product Overview", "/product", "One workspace for every AI tool")] +
+        ("Platform", [("Product Overview", "/product", "One workspace for every model, agent and task")] +
          [(t, h, d) for t, h, d in FEATURES]),
-        ("Modes", [(t, h, d) for t, h, d in MODES]),
+        ("Modes", [(t, h, d) for t, h, d in MODES] +
+         [("Security and Trust", "/security", "Controls you can point to")]),
     ]),
-    ("Teams", [
-        ("By Team", [("All Teams", "/teams", "How RenOS fits each team")] +
-         [(t["name"], f"/teams/{t['slug']}", t["h1"]) for t in TEAMS[:3]]),
-        ("", [(t["name"], f"/teams/{t['slug']}", t["h1"]) for t in TEAMS[3:]]),
-    ]),
-    ("Industries", [
-        ("By Industry", [("All Industries", "/industries", "Governed AI for your sector")] +
+    ("Governance", "/governance"),
+    ("Solutions", [
+        ("By Industry", [("All Solutions", "/solutions", "Policy packs for regulated, people-heavy work")] +
          [(i["name"], f"/industries/{i['slug']}", i.get("menu", "AI for " + i["name"].lower())) for i in INDUSTRIES[:4]]),
         ("", [(i["name"], f"/industries/{i['slug']}", i.get("menu", "AI for " + i["name"].lower())) for i in INDUSTRIES[4:]]),
+        ("By Team", [("All Teams", "/teams", "How RenOS fits each team")] +
+         [(t["name"], f"/teams/{t['slug']}", t["menu"]) for t in TEAMS]),
     ]),
-    ("Resources", [
-        ("Learn", [
-            ("Resources", "/resources", "Guides for using AI at work"),
-            ("What Is an AI Operating System", "/ai-operating-system", "A plain guide"),
-            ("Security and Data", "/security", "Where your data goes"),
-        ]),
-        ("Company", [
-            ("About RenOS", "/about", "Why we built it"),
-            ("Partners", "/partners", "For MSPs and IT consultancies"),
-            ("60-Day Pilot", "/pilot", "How a pilot works"),
-        ]),
-    ]),
+    ("Credits", "/credits"),
     ("Pricing", "/pricing"),
+    ("Partners", "/partners"),
+    ("About", "/about"),
 ]
 
 FOOTER = [
-    ("Product", [("Overview", "/product")] + [(t, h) for t, h, _ in MODES] + [(t, h) for t, h, _ in FEATURES]),
-    ("Teams", [("All Teams", "/teams")] + [(t["name"], f"/teams/{t['slug']}") for t in TEAMS]),
-    ("Industries", [("All Industries", "/industries")] + [(i["name"], f"/industries/{i['slug']}") for i in INDUSTRIES]),
-    ("Resources", [("Resources", "/resources"), ("AI Operating System Guide", "/ai-operating-system"),
-                   ("Security and Data", "/security")]),
-    ("Company", [("About", "/about"), ("Partners", "/partners"), ("Pricing", "/pricing"),
-                 ("60-Day Pilot", "/pilot"), ("Contact", "/contact"), ("Vocom AI", "https://www.vocom.ai")]),
+    ("Product", [("How It Works", "/product"), ("Governance", "/governance"), ("Security", "/security"),
+                 ("Pricing", "/pricing"), ("Vocom Credits", "/credits")]),
+    ("Solutions", [("Healthcare", "/industries/dental-groups"), ("Property Management", "/industries/property-management"),
+                   ("Credit Unions", "/industries/credit-unions"), ("MSPs and IT Partners", "/industries/msps"),
+                   ("All Solutions", "/solutions")]),
+    ("Company", [("About", "/about"), ("Partners", "/partners"), ("Resources", "/resources"), ("Contact", "/contact"),
+                 ("Book a Pilot", "/pilot"), ("Sign In", "/login")]),
 ]
 
 # ------------------------------------------------------------------ Page helpers
@@ -454,9 +448,14 @@ def mode_cards(exclude=None, h2="How It Fits With the Other Modes", lede=None):
         {"title": t, "text": d, "href": h, "more": f"See {t}"} for t, h, d in MODES if t != exclude]}
 
 
-TIMELINE = [("09:14:02", "Policy Evaluated", "Confidential data matched"),
-            ("09:14:03", "Model Executed", "Approved model · cost logged"),
-            ("09:16:31", "Accepted by User", "Audit entry written")]
+TIMELINE = [("12:44:02", "Policy Evaluated", "Data residency matched"),
+            ("12:44:03", "Model Executed", "Approved frontier model" + (" · $0.012" if SHOW_PRICES else " · cost logged")),
+            ("12:44:31", "Accepted by User", "Sealed · chain intact")]
+SESSION_BULLETS = ["Plain-language summary of what happened and why that model was chosen.",
+                   "Step-by-step timeline from request to accepted result.",
+                   "Tamper-evident chain so records can be verified later."]
+PILOT_CTA = {"h2": "Start With One Pilot Team",
+             "text": 'Sixty days, one team, one real workflow. You\'ll see governed sessions, receipts and cost on your own work. <a href="/pilot">How the pilot works</a>.'}
 
 
 def collection_page(item, kind):
@@ -470,6 +469,13 @@ def collection_page(item, kind):
          "cols": 2 if len(item["helps"]) == 4 else 3,
          "items": [{"title": t, "text": d} for t, d in item["helps"]]},
     ]
+    if item.get("rule"):
+        sections.append({"type": "cards", "eyebrow": "What a Rule Looks Like", "h2": "A Policy Pack Rule for " + item["name"],
+                         "lede": 'Packs are starting points you edit and simulate before publishing. See <a href="/governance">how policies work</a>.',
+                         "cols": 2, "items": [{"title": item["rule"][0], "plain": True, "rule": [("When", item["rule"][1]), ("Then", item["rule"][2])]},
+                                              {"title": "Tested Before It Goes Live", "plain": True,
+                                               "text": "Lint and simulation run against the last 30 days of sessions, so you see conflicts, gaps and how much traffic a rule would block before anyone is affected."}],
+                         "foot": "Examples are illustrative."})
     if item.get("note"):
         sections.append({"type": "prose", "html": f'<p class="callout">{item["note"]}</p>', "tight": True})
     sections += [
@@ -483,14 +489,13 @@ def collection_page(item, kind):
         "route": f"{base}/{item['slug']}", "crumb": name, "crumbs": [(hub, base)],
         "title": item["title"], "description": item["description"],
         "hero": {"eyebrow": f"RenOS for {name}", "h1": item["h1"], "lede": item["intro"],
-                 "buttons": [("Start a Pilot", "/pilot"), ("Book a Demo", "/contact", "ghost")],
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Pricing", "/pricing", "ghost")],
                  "visual": {"shot": f"{kind}-{item['slug']}", "fallback": item.get("showcase") or [
                      ("label", "ROUTING RATIONALE"),
                      ("note", "Sensitive data detected, so policy sent this task to an approved model."),
                      ("kv", "Team", name), ("kv", "Policy", "Data sensitivity"), ("ok", "Audit entry written")]}},
         "sections": sections,
-        "cta": {"h2": "Start a 60-Day Pilot With Your " + ("Team" if kind == "teams" else "Organization"),
-                "text": 'Bring one real workflow. We\'ll set up policy together and you\'ll see the routing rationale and audit trail on your own work. <a href="/pilot">How the pilot works</a>.'},
+        "cta": PILOT_CTA,
     }
 
 
@@ -505,7 +510,7 @@ def feature_page(route, crumb, title, desc, eyebrow, h1, lede, rows_, related, f
     return {"route": route, "crumb": crumb, "crumbs": [("Product", "/product")], "software": True,
             "software_name": f"RenOS {crumb}", "title": title, "description": desc,
             "hero": {"eyebrow": eyebrow, "h1": h1, "h1_accent": h1_accent, "lede": lede,
-                     "buttons": [("Start a Pilot", "/pilot"), ("Book a Demo", "/contact", "ghost")],
+                     "buttons": [("Book a Pilot", "/pilot"), ("See a Governed Session", "/governance", "ghost")],
                      "visual": {"shot": shot, "fallback": hero_visual or rows_[0].get("visual")}},
             "sections": sections}
 
@@ -518,109 +523,115 @@ def pages():
     # ---------------- Home
     P.append({
         "route": "/", "title": "RenOS: The AI Operating System for Teams",
-        "description": "RenOS is the AI operating system for teams. Run AI agents on any model, routed by your rules, explained in plain language and logged. Start a pilot.",
+        "description": "RenOS is the AI operating system for teams: use every AI model under your policies, with an audit trail that writes itself. Book a 60-day pilot.",
         "hero": {
-            "eyebrow": "AI Operating System", "h1": "The AI Operating System", "h1_accent": "for Your Team",
-            "lede": "Run AI agents across any model your team uses. RenOS picks the model for each task under your rules, explains why in plain language, and logs everything automatically.",
-            "buttons": [("Start a Pilot", "/pilot"), ("Book a Demo", "/contact", "ghost")],
-            "proof": ["Every task policy-checked", "Every task logged", "Hundreds of models, one workspace"],
+            "eyebrow": "The Governance Layer for AI at Work", "h1": "Use Every AI Model.", "h1_accent": "Prove What Each One Did.",
+            "lede": "RenOS sends each task to the right model under your organization's policies, and writes an audit trail automatically. Your team just asks. Your admin sees everything without asking anyone.",
+            "buttons": [("Book a Pilot", "/pilot"), ("See a Governed Session", "/governance", "ghost")],
+            "proof": ["Every session policy-checked", "Every session logged", "Local and offline models"],
             "visual": {"shot": "home-hero", "fallback": "globe", "alt": "The RenOS workspace showing a task routed to an approved model with its routing rationale"},
         },
         "sections": [
-            {"type": "cards", "eyebrow": "The Problem", "h2": "Your Team Already Uses AI. Can You Prove What It Did?",
-             "lede": "AI arrives one subscription at a time. Separate bills, separate tools, and nobody able to show who ran what, on which model, with what data.",
-             "icons": False, "items": [
-                 {"title": "Shadow AI", "text": "Staff paste client and customer data into consumer chatbots, with no agreement in place."},
-                 {"title": "Subscription Sprawl", "text": "You pay for several AI tools and can't see how any of them are used."},
-                 {"title": "No Answer for the Auditor", "text": "When someone asks what the AI did with that data, nobody can say."}]},
-            {"type": "cards", "id": "how-it-works", "eyebrow": "How It Works", "h2": "How RenOS Works",
+            {"type": "problems", "sr_h2": "The Problem", "items": [
+                {"title": "Shadow AI", "text": "Staff paste client and patient data into consumer chatbots, with no agreement in place."},
+                {"title": "Subscription Sprawl", "text": "You pay for several AI tools and can't see how any of them are used."},
+                {"title": "No Answer for the Auditor", "text": "When someone asks what the AI did with that data, nobody can say."}]},
+            {"type": "cards", "id": "how-it-works", "eyebrow": "How It Works", "h2": "Governance That Adds No Work for Your Team",
              "lede": "People pick a mode and describe the task. Policy and routing happen in the background, and the record writes itself.",
-             "cols": 4, "items": [
-                 {"num": "01", "title": "Submit a Task", "text": "Pick Chat, Builder or Agent mode and describe the work. No model to choose.", "demo": ("Chat · Builder · Agent", "Draft a renewal notice for our Maple Court tenants")},
-                 {"num": "02", "title": "Policy Decides", "text": 'Your rules by data sensitivity, task type and role pick the model before anything is sent. See <a href="/product/routing">policy routing</a>.', "demo": ("Policy checked", "Confidential · approved model")},
-                 {"num": "03", "title": "Routing Rationale", "text": "A plain-language reason comes with every decision.", "demo": ("Rationale", "Tenant data, so an approved model")},
-                 {"num": "04", "title": "Audit Trail", "text": 'An entry is written automatically, readable by someone who wasn\'t in the room. See the <a href="/product/audit-trail">AI audit trail</a>.', "demo": ("Logged", "Result accepted · no overrides")}]},
-            mode_cards(h2="Chat, Builder and Agent Modes",
-                       lede="Three ways to work, one set of rules. Every mode is an AI assistant your admin can govern."),
-            {"type": "split", "eyebrow": "Cost and Independence", "h2": "Spend Less on Every AI Task",
-             "lede": "Stop paying for several subscriptions to get the capability of one, and stop being locked into the vendor you started with.",
-             "bullets": ["One workspace across hundreds of AI models.", "Per-team spend caps, enforced by the system.",
-                         'Cheaper models for low-stakes work, set by <a href="/product/admin">company AI controls</a>.'],
-             "visual": [("label", "SPEND THIS MONTH"), ("bar", "Sales", "72%"), ("bar", "Operations", "48%"),
-                        ("bar", "Finance", "30%"), ("kv", "Low-stakes tasks", "Routed to lower-cost models")]},
-            {"type": "split", "eyebrow": "Risk and Accountability", "h2": "Govern and Audit Every Agent",
-             "lede": "Every task is one governed record: who ran it, on which model, under which policy, with what outcome.",
-             "bullets": ["Plain-language summary of what happened and why that model was chosen.",
-                         "Step-by-step timeline from request to accepted result.",
-                         "Exportable logs your compliance team can review."],
-             "summary": "A property manager asked for a renewal notice. Because it involved confidential tenant data, policy required an approved model. It ran in seconds and was accepted with no overrides.",
+             "items": [
+                 {"num": "01", "title": "Ask in Plain Language", "text": 'Sign in with your company account. Your role is already set. Choose <a href="/product/chat">Chat</a>, <a href="/product/builder">Builder</a> or <a href="/product/agents">Agent</a> and describe the work.', "demo": ("Chat · Builder · Agent", "Draft a rent-increase notice for Maple Court...")},
+                 {"num": "02", "title": "Policy Picks the Model", "text": 'Rules by data sensitivity, task type and role run before any model sees the task. You get a plain-language reason. See <a href="/product/routing">policy routing</a>.', "demo": ("Policy checked · Confidential", "Approved frontier model")},
+                 {"num": "03", "title": "The Record Writes Itself", "text": 'Every step lands in a tamper-evident <a href="/product/audit-trail">audit trail</a>. Accept the result and the session closes. Nothing to export.', "demo": ("Logged · GS-20418", "Result accepted · no overrides")}]},
+            {"type": "split", "eyebrow": "The Governed Session", "h2": "A Record a Stranger Can Read",
+             "lede": 'Each task is one governed session: who ran it, on which model, under which policy, with what outcome. See <a href="/governance">how governance works</a>.',
+             "bullets": SESSION_BULLETS,
+             "summary": "Kevin asked for a rent-increase notice. Because it involved confidential tenant data, policy required an approved frontier model. It ran in 4.2 seconds. Kevin accepted it. No overrides.",
              "timeline": TIMELINE},
-            {"type": "cards", "eyebrow": "Teams", "h2": "Built for the Teams That Answer for Their AI",
-             "lede": 'See how RenOS fits <a href="/teams">every team</a> that uses AI at work.',
-             "items": [{"title": t["name"], "text": t["intro"].split(". ")[0] + ".", "href": f"/teams/{t['slug']}", "accent": t["accent"], "more": f"RenOS for {t['name']}"} for t in TEAMS]},
-            {"type": "chips", "eyebrow": "Industries", "h2": "Governed AI for Regulated Industries",
-             "lede": 'Organizations with a compliance duty, client confidentiality, or a growing AI bill. <a href="/industries">See all industries</a>.',
-             "items": [(i["name"], f"/industries/{i['slug']}") for i in INDUSTRIES]},
-            {"type": "split", "eyebrow": "60-Day Pilot", "h2": "Start With a 60-Day Pilot",
-             "lede": "Up to 15 seats, Pro features, usage credits and a written success plan. Bring one real workflow and see governed AI on your own work.",
-             "bullets": ["Kickoff and a written success plan in week one.", "Your first real workflow live early.",
-                         "Review the audit trail with your compliance contact."],
-             "buttons": [("See How the Pilot Works", "/pilot")],
-             "visual": [("label", "PILOT PLAN"), ("kv", "Length", "60 days"), ("kv", "Seats", "Up to 15"),
-                        ("kv", "Includes", "Pro features, usage credits"), ("ok", "Written success plan")]},
+            {"type": "cards", "eyebrow": "Capabilities", "h2": "Everything an Admin Needs, and Nothing Users Notice",
+             "lede": "The wedge is governance. The rest makes it usable every day.", "items": [
+                 {"title": "Routing Under Policy", "text": "Rules by data sensitivity, task type and role, enforced before a task reaches any model.", "href": "/product/routing", "more": "See policy routing"},
+                 {"title": "Automatic Audit Trail", "text": "Every governed task writes an entry. Nobody has to remember to document anything.", "href": "/product/audit-trail", "more": "See the audit trail"},
+                 {"title": "Admin Oversight", "text": "One place to see sessions, cost and policy activity, and to change a rule that applies to the next task.", "href": "/product/admin", "more": "See the admin dashboard"},
+                 {"title": "Hundreds of Models", "text": "Frontier and open models behind one interface, so you can switch suppliers without retraining your team.", "href": "/models", "more": "See supported models"},
+                 {"title": "Local and Offline", "text": "Keep sensitive work on your own machines when policy calls for it.", "href": "/security", "more": "See security"},
+                 {"title": "Multi-Agent, Side by Side", "text": "Run several models or agents at once and compare results, with policy applied to each.", "href": "/product/agents", "more": "See Agent mode"}]},
+            {"type": "chips", "eyebrow": "Who It's For", "h2": "Teams Where Someone Has to Answer for AI Use",
+             "lede": 'Multi-user organizations with a compliance duty, client confidentiality, or a growing AI bill. <a href="/solutions">See all solutions</a>.',
+             "items": [("Multi-Location Healthcare", "/industries/dental-groups"), ("Property Management", "/industries/property-management"),
+                       ("Credit Unions", "/industries/credit-unions"), ("Professional Services", "/industries/professional-services"),
+                       ("MSPs and IT Partners", "/industries/msps"), ("Real Estate Brokerages", "/industries/real-estate")]},
             {"type": "faq", "h2": "RenOS Frequently Asked Questions", "items": [
-                ("What is RenOS?", 'RenOS is an AI operating system for teams. It gives your people one workspace across many AI models, routes each task by your rules, explains every decision in plain language and writes an audit entry automatically. Read <a href="/ai-operating-system">what an AI operating system is</a>.'),
-                ("How is it different from a single AI assistant?", "An assistant answers questions. RenOS sits across every assistant and model your team uses and adds the policy layer, audit trail and admin view across all of them."),
-                ("Which AI models does it work with?", 'RenOS reaches hundreds of models through one workspace, across text and reasoning, image, audio and video. See <a href="/models">supported AI models</a>.'),
+                ("What is RenOS?", 'RenOS is an AI operating system for teams, and the governance layer for AI at work. It gives your people one workspace across many AI models, routes each task by your rules, explains every decision in plain language and writes an audit entry automatically. Read <a href="/ai-operating-system">what an AI operating system is</a>.'),
+                ("How is it different from a single AI assistant?", "An assistant answers questions. RenOS sits across every model your team uses and adds the policy layer, audit trail and admin view across all of them."),
+                ("Which AI models does it work with?", 'Frontier and open models through one workspace, plus your own keys on Enterprise and local models on your own hardware. See <a href="/models">supported AI models</a>.'),
                 ("Where does our data go?", "You choose which models and suppliers each task may use, by data sensitivity, task type or role. Every choice is logged with its reason."),
-                ("Can it run in our own environment?", "Yes. Private or local deployment keeps data inside your environment."),
-                ("How do we get started?", 'Start with a <a href="/pilot">60-day pilot</a>: up to 15 seats, a written success plan and one real workflow.'),
+                ("Can it run in our own environment?", 'Yes. Private deployment runs RenOS on your own infrastructure with local models. See <a href="/security">security</a>.'),
+                ("How do we get started?", 'Start with a <a href="/pilot">60-day pilot</a>: one team, one real workflow, up to 15 seats and a written success plan.'),
             ]},
         ],
     })
 
     # ---------------- Product Overview
+    crew_budget = "$2.00" if SHOW_PRICES else "Hard cap"
     P.append({
         "route": "/product", "crumb": "Product", "software": True,
         "title": "RenOS Product: AI Tools Your Team Can Govern",
-        "description": "RenOS brings the AI tools your team uses into one governed workspace: policy routing, an audit trail, cost control and three modes. Book a live demo.",
-        "hero": {"eyebrow": "Product", "h1": "One Workspace for Every", "h1_accent": "AI Tool Your Team Uses",
-                 "lede": "Your team doesn't need more AI tools. It needs one place to use them, with rules that run before any model is called and a record that writes itself.",
-                 "buttons": [("Book a Demo", "/contact"), ("Start a Pilot", "/pilot", "ghost")],
-                 "visual": {"shot": "product-hero", "fallback": "workspace"}},
+        "description": "RenOS brings every AI model your team uses into one governed workspace: Chat, Builder and Agent modes, policy routing and an audit trail. Book a pilot.",
+        "hero": {"eyebrow": "Chat · Builder · Agent", "h1": "One Workspace for Every", "h1_accent": "Model, Agent and Task.",
+                 "lede": "RenOS runs on a server, so your whole team signs in from any device. Every task is routed by policy, every result carries a receipt, and every action has a tier.",
+                 "buttons": [("Book a Pilot", "/pilot"), ("See a Governed Session", "/governance", "ghost")],
+                 "visual": {"shot": "product-hero", "fallback": "globe-labels"}},
         "sections": [
-            {"type": "cards", "eyebrow": "The Problem", "h2": "AI Tools Arrive One Subscription at a Time",
-             "lede": "Each team picks its own AI tools. Soon there are several bills, several places your data lives, and no single view of any of it.",
-             "icons": False, "items": [
-                 {"title": "Scattered Tools", "text": "Every department has its own assistant, login and settings."},
-                 {"title": "Scattered Data", "text": "Customer and company data ends up in places nobody approved."},
-                 {"title": "Scattered Bills", "text": "Overlapping subscriptions with no view of what they produce."}]},
-            {"type": "cards", "eyebrow": "Four Jobs", "h2": "What RenOS Does for Company AI", "cols": 2, "items": [
-                {"title": "Routing", "text": "Every task goes to the right model under your rules.", "href": "/product/routing", "more": "See policy routing"},
-                {"title": "Governance", "text": "Rules by data sensitivity, task type and role, enforced before any model is called.", "href": "/security", "more": "See security and data"},
-                {"title": "Audit", "text": "An entry for every task, readable by someone who wasn't in the room.", "href": "/product/audit-trail", "more": "See the AI audit trail"},
-                {"title": "Cost Control", "text": "Per-team spend caps and the cost of every task in one view.", "href": "/product/admin", "more": "See the admin dashboard"}]},
+            {"type": "cards", "eyebrow": "Three Modes, One Composer", "h2": "Ask Yourself: An Answer, a Thing Made, or a Thing Done?",
+             "lede": "A mode belongs to a run, so one project thread can hold all three. Chat is suggested up to Builder or Agent, never forced.",
+             "items": [
+                 {"title": "Chat", "tag": "Lowest Cost", "plain": True, "text": "You want an answer, a draft, or a thinking partner.",
+                  "example": "Draft a reply to the carrier about the Manila outage.",
+                  "dl": [("Authority", "Read-only"), ("Cost", "Lowest · about 2 s"), ("Ends when", "Reply sent")],
+                  "href": "/product/chat", "more": "See Chat Mode"},
+                 {"title": "Builder", "tag": "Plan First", "plain": True, "text": "You want a finished thing: a doc, app, report or workflow.",
+                  "example": "Plan · editable: Triage playbook, Credit calculator, Root-cause template.",
+                  "dl": [("Authority", "Creates files inside the project sandbox"), ("Cost", "Medium · plan + N units"), ("Ends when", "Artifact delivered")],
+                  "href": "/product/builder", "more": "See Builder Mode"},
+                 {"title": "Agent", "tag": "Always Capped", "plain": True, "text": "You want something done or watched in other systems.",
+                  "example": "Watch Manila-route latency. If it stays above 200 ms, open a task and email the carrier.",
+                  "dl": [("Authority", "Acts through connectors, by tier"), ("Cost", "Highest · always capped"), ("Ends when", "Goal met, cap hit, or stopped")],
+                  "href": "/product/agents", "more": "See Agent Mode"}]},
+            {"type": "split", "eyebrow": "Routing Under Policy", "h2": "The Right Model for the Task, Inside the Rules",
+             "lede": 'Auto is the default. Rules by data sensitivity, task type and role run before any model sees the task, and manual model choice is a governed override. See <a href="/product/routing">policy routing</a>.',
+             "bullets": ["Locked models explain themselves, with the rule that blocked them.",
+                         "Route profiles: Economy, Balanced, Max quality and Private.",
+                         "Monthly caps with alerts, and a downshift to Economy at the cap."],
+             "visual": "routing"},
+            {"type": "cards", "eyebrow": "Multi-Agent Crews", "h2": "Patterns You Can Run, With Caps You Set",
+             "lede": "A crew is named roles, one objective and hard caps, and it runs as one governed session. Reviewers never grade their own work.",
+             "items": [
+                 {"title": "Planner, Then Executors", "text": "A planner makes the plan; executors build the units in parallel. Better control and observability for long workflows."},
+                 {"title": "Visionary and Integrator", "text": "A second vendor re-runs the proof independently. Verdicts: Same page, Revise, Reject, or Escalate to you as referee."},
+                 {"title": "Verifier-Gated Actions", "text": "An independent verifier checks rules before anything leaves the building. Tier-3 actions always wait for a human."}],
+             "after": {"type": "stats", "items": [("3", "review rounds"), ("5", "scope units"), (crew_budget, "budget per crew run"), ("Tier 3", "needs human sign-off")]}},
+            {"type": "cards", "eyebrow": "Around the Workspace", "h2": "Everything a Team Needs to Work With AI Day to Day", "items": [
+                {"title": "Projects", "text": "Workspaces with a brief, an alignment gate and a morning brief, shared across the team."},
+                {"title": "Connectors and Plug-Ins", "text": "One hub for connectors, skills and models, with plain-language permission review at least authority."},
+                {"title": "Approvals Inbox", "text": "Only Tier-3 actions interrupt you. Everything else is checked by rules and logged."},
+                {"title": "Split View", "text": "Run up to four models side by side and compare, with policy applied to each."},
+                {"title": "Local and Offline", "text": "Keep sensitive work on your own machines when policy calls for it."},
+                {"title": "Intranet", "text": "An organization home with a permission-aware assistant: same question, different answers for different people."}]},
             {"type": "flow", "eyebrow": "Product Flow", "h2": "Follow One Task Through RenOS",
              "lede": "From the admin's first budget to the record an auditor reads. This is what your team and your admin actually see.",
              "steps": [
                  ("Sign In", "signin", "People sign in with their company account. Their role and policies are already set."),
-                 ("Set Budgets and Caps", "budgets", 'The admin sets monthly budgets per team, with alerts and a hard ceiling for each agent task. See the <a href="/product/admin">admin dashboard</a>.'),
+                 ("Set Budgets and Caps", "budgets", 'The admin sets monthly caps per team and user, with alerts at 50, 80 and 100% and a hard ceiling for each agent task. See the <a href="/product/admin">admin dashboard</a>.'),
                  ("Choose Allowed Models", "supply", 'Each data class gets its own list of allowed models. Regulated data stays on approved models or your own keys.'),
                  ("Run a Task", "task", 'Policy picks the model, explains why in plain language and checks the budget before anything runs. See <a href="/product/routing">policy routing</a>.'),
                  ("Read the Audit Record", "audit", 'Who ran what, on which model, under which policy and at what cost. See the <a href="/product/audit-trail">AI audit trail</a>.'),
                  ("Hit a Budget Limit", "limit", "When a team reaches its cap, work pauses instead of overspending. The user picks a cheaper route or asks an owner to approve more."),
              ]},
-            mode_cards(h2="Three Modes, One Set of Rules", lede="People choose how they want to work. Policy, routing and the record stay the same."),
-            {"type": "split", "eyebrow": "The Admin Loop", "h2": "See What Happened, Change a Rule, Done",
-             "lede": "The admin sees what happened across the team without interviewing anyone, adjusts a rule, and it applies to the next task.",
-             "bullets": ["Who ran what, on which model, under which policy, at what cost.", "Rule changes take effect on the next task.",
-                         'Free admin, auditor and read-only seats. See <a href="/pricing">RenOS pricing</a>.'],
-             "visual": [("label", "ADMIN VIEW"), ("kv", "Tasks this week", "All logged"), ("kv", "Policy changes", "Applied to next task"),
-                        ("kv", "Spend", "Within team caps"), ("ok", "No interviews needed")]},
             {"type": "faq", "h2": "Frequently Asked Questions", "items": [
-                ("Is RenOS another AI assistant?", "No. RenOS is the layer across the AI tools your team uses: one workspace, one policy, one audit trail."),
-                ("Do people have to learn which model to use?", "No. They pick a mode and describe the task. Policy picks the model and explains why."),
-                ("Can we see a demo on our own work?", 'Yes. <a href="/contact">Book a demo</a> and bring one real task.'),
+                ("Is RenOS another AI assistant?", "No. RenOS is the layer across the AI models your team uses: one workspace, one policy, one audit trail."),
+                ("Do people have to learn which model to use?", "No. Auto is the default. They pick a mode and describe the task, and policy picks the model and explains why. Choosing a model by hand is a governed override."),
+                ("Does it run on our laptops?", "RenOS runs on a server, so your whole team signs in from any device. Local models can run on your own hardware when policy calls for it."),
+                ("Can we see it on our own work?", 'Yes. <a href="/pilot">Book a pilot</a> and bring one real workflow.'),
             ]},
         ],
     })
@@ -629,94 +640,108 @@ def pages():
     P.append(feature_page(
         "/product/chat", "Chat Mode", "AI Assistant for Teams, Routed to the Right Model",
         "Chat mode is an AI assistant for everyday work: ask in plain language, policy picks the model, and every chat is logged without extra steps. Start a pilot.",
-        "Chat Mode", "An AI Assistant That Picks", "Ask in plain language. RenOS sends each request to the right model under your rules, shows you why, and logs the chat without anyone lifting a finger.",
+        "Chat Mode", "An AI Assistant That Picks", "You want an answer, a draft or a thinking partner. Chat is the lowest-cost mode: read-only, a reply in about two seconds, routed to the right model under your rules and logged without anyone lifting a finger.",
         [
             {"title": "Ask in Plain Language", "text": "Your AI assistant works the way people already do: describe the task and get to work. No model menu, no settings.",
              "visual": "workspace"},
-            {"title": "The Right Model, With the Reason Shown", "text": 'Policy picks the model for each request and shows a plain-language reason. Learn how <a href="/product/routing">policy routing</a> decides.',
+            {"title": "The Right Model, With the Reason Shown", "text": 'Auto is the default. Policy picks the model for each request and shows a plain-language reason. Learn how <a href="/product/routing">policy routing</a> decides.',
              "visual": "task"},
+            {"title": "Read-Only, Lowest Cost", "text": "Chat answers and drafts. It doesn't create files or act in other systems, so it's the cheapest way to work. The run ends when the reply is sent.",
+             "visual": [("label", "CHAT MODE"), ("kv", "Authority", "Read-only"), ("kv", "Cost", "Lowest · about 2 s"), ("kv", "Ends when", "Reply sent")]},
             {"title": "Every Chat Logged Without Extra Steps", "text": 'Each chat writes an entry to the <a href="/product/audit-trail">AI audit trail</a>. Nobody fills in a form.',
              "visual": "audit"},
         ],
-        [{"title": "Builder Mode", "text": "Work with more than one model side by side.", "href": "/product/builder", "more": "See Builder Mode"},
-         {"title": "Agent Mode", "text": "Several AI agents on one task, each with its own identity.", "href": "/product/agents", "more": "See Agent Mode"},
+        [{"title": "Builder Mode", "text": "A finished thing: a doc, app, report or workflow.", "href": "/product/builder", "more": "See Builder Mode"},
+         {"title": "Agent Mode", "text": "Something done or watched in other systems, always capped.", "href": "/product/agents", "more": "See Agent Mode"},
          {"title": "RenOS for Operations", "text": "AI for work that operations teams run every day.", "href": "/teams/operations", "more": "See the operations page"}],
         [("Is Chat mode my AI or the company's?", "It's your AI assistant inside the company's rules. You use it like any assistant; your admin decides which models it may use."),
-         ("Can I choose the model myself?", "You don't need to. Policy picks the right model for each task and explains why."),
+         ("Can I choose the model myself?", "You don't need to. Auto picks the right model for each task and explains why. A manual choice is a governed override, and locked models show the rule that blocked them."),
+         ("What if my question turns into real work?", "Chat suggests moving up to Builder or Agent when a task needs a finished file or an action. It's a suggestion, never forced, and one project thread can hold all three modes."),
          ("Is every chat recorded?", "Yes. Each chat writes an audit entry automatically, with the policy that applied.")],
         "product-chat", h1_accent="the Right Model for You"))
 
     P.append(feature_page(
-        "/product/builder", "Builder Mode", "Builder Mode: Run AI Tasks Across Models",
-        "Builder mode lets your team run AI tasks across more than one model side by side, compare the results, iterate and accept, with every version recorded.",
-        "Builder Mode", "Build With More Than One", "Working with AI is better when you can compare. Builder mode runs the same task on more than one model in split view, so you pick the best result and keep the record.",
+        "/product/builder", "Builder Mode", "Builder Mode: Run AI Tasks From Plan to Finished Work",
+        "Builder mode runs AI tasks that end in a finished thing: a doc, app, report or workflow. It plans first, builds in a sandbox and records every version.",
+        "Builder Mode", "Build the Finished Thing,", "You want a finished thing: a doc, app, report or workflow. Builder mode shows you an editable plan first, builds each unit inside the project sandbox, and delivers the artifact with a full record.",
         [
-            {"title": "Split View", "text": "Run one AI task on several approved models at once and see the outputs side by side.",
-             "visual": [("pill", "Builder · Split view"), ("split", [("MODEL A", "Clear, formal draft"), ("MODEL B", "Shorter, friendlier draft")])]},
-            {"title": "Compare and Pick", "text": "Iterate on the version that works, and accept it when it's ready.",
-             "visual": [("kv", "Versions", "3"), ("kv", "Accepted", "Model B, version 2"), ("ok", "Choice recorded")]},
-            {"title": "Every Version Recorded", "text": 'Each version, model and acceptance is written to the <a href="/product/audit-trail">AI audit trail</a>.',
-             "visual": [("label", "AUDIT ENTRY"), ("kv", "Models used", "2"), ("kv", "Policy", "Internal documents"), ("ok", "Written automatically")]},
+            {"title": "An Editable Plan First", "text": "Before anything is built, Builder shows the plan and what it will cost. Edit it, drop a unit or add one, then start.",
+             "visual": [("pill", "Builder · Plan first"), ("label", "PLAN · EDITABLE"), ("kv", "Unit 1", "Triage playbook"), ("kv", "Unit 2", "Credit calculator"), ("kv", "Unit 3", "Root-cause template"), ("kv", "Cost", "Medium · plan + 3 units")]},
+            {"title": "Built Inside the Project Sandbox", "text": "Builder creates files inside the project sandbox. Nothing acts on other systems; that's what Agent mode and its approval tiers are for.",
+             "visual": [("label", "AUTHORITY"), ("note", "Creates files inside the project sandbox"), ("ok", "Ends when the artifact is delivered")]},
+            {"title": "Compare Models in Split View", "text": "Run up to four models side by side on the same unit and keep the best result, with policy applied to each.",
+             "visual": [("pill", "Split view"), ("split", [("MODEL A", "Clear, formal draft"), ("MODEL B", "Shorter, friendlier draft")])]},
+            {"title": "Every Version Recorded", "text": 'Each plan, version, model and acceptance is written to the <a href="/product/audit-trail">AI audit trail</a>.',
+             "visual": [("label", "AUDIT ENTRY"), ("kv", "Units", "3 delivered"), ("kv", "Policy", "Internal documents"), ("ok", "Written automatically")]},
         ],
-        [{"title": "Chat Mode", "text": "An AI assistant that picks the right model.", "href": "/product/chat", "more": "See Chat Mode"},
-         {"title": "Agent Mode", "text": "AI agents that work together on one task.", "href": "/product/agents", "more": "See Agent Mode"},
+        [{"title": "Chat Mode", "text": "An answer, a draft or a thinking partner.", "href": "/product/chat", "more": "See Chat Mode"},
+         {"title": "Agent Mode", "text": "Something done or watched in other systems.", "href": "/product/agents", "more": "See Agent Mode"},
          {"title": "RenOS for Operations", "text": "Use AI for work your team repeats every day.", "href": "/teams/operations", "more": "See the operations page"}],
-        [("Which models can Builder mode compare?", "Any models your admin approves for that kind of task."),
-         ("Does comparing models cost more?", "Each model run is a task with a cost, shown in the admin view and covered by team spend caps."),
+        [("What can Builder mode make?", "A finished thing: a document, a small app, a report or a workflow, delivered as an artifact in your project."),
+         ("What does it cost?", "Medium: the plan plus one charge per unit built. You see the estimate on the plan before anything runs."),
+         ("Can Builder compare models?", "Yes. Split view runs up to four approved models side by side so you can keep the best result."),
          ("Is the rejected output kept?", "The record shows every version and which one was accepted.")],
-        "product-builder", h1_accent="AI Model Side by Side"))
+        "product-builder", h1_accent="Plan First"))
 
     P.append(feature_page(
         "/product/agents", "Agent Mode", "AI Agents That Work Together, With Rules",
-        "Agent mode runs several AI agents on one task, each with its own identity and role, with handoffs, review and every action in one audit trail. Book a demo.",
-        "Agent Mode", "AI Agents That Work", "An AI agent is useful. A few working together under rules is better. Agent mode runs several agents on one task, each with its own identity, and keeps every step in one trail.",
+        "Agent mode gets work done in other systems through connectors, by approval tier and always capped. Crews run several AI agents as one governed session.",
+        "Agent Mode", "AI Agents That Act,", "You want something done or watched in other systems. Agent mode acts through connectors by approval tier, always runs under a hard cap, and ends when the goal is met, the cap is hit or you stop it.",
         [
-            {"title": "Agents With Roles", "text": "Each AI agent has its own identity and role, so you always know which agent did what.",
-             "visual": [("pill", "Agent mode"), ("kv", "Researcher", "Gathers sources"), ("kv", "Writer", "Drafts the brief"), ("kv", "Reviewer", "Checks against policy")]},
-            {"title": "Handoffs and Review", "text": "Agents pass work to each other and to a person for review before anything is accepted.",
-             "visual": [("label", "HANDOFF"), ("note", "Writer passed the draft to Reviewer"), ("ok", "Sent to a person for review")]},
-            {"title": "Every Agent's Actions in One Trail", "text": 'One <a href="/product/audit-trail">AI audit trail</a> covers every agent, model and handoff in the task.',
-             "visual": [("label", "AUDIT ENTRY"), ("kv", "Agents", "3"), ("kv", "Models used", "2"), ("ok", "Every step logged")]},
+            {"title": "Acts Through Connectors, by Tier", "text": "Agents work in your other systems through connectors with the least authority they need. Every action carries an approval tier.",
+             "visual": [("pill", "Agent · Always capped"), ("note", "Watch Manila-route latency. If it stays above 200 ms, open a task and email the carrier."), ("kv", "Authority", "Connectors, by tier"), ("kv", "Ends when", "Goal met, cap hit, or stopped")]},
+            {"title": "Always Capped", "text": 'Agent tasks and crews always carry a hard limit, so a runaway job can\'t spend your month. See <a href="/credits">RenOS Credits</a>.',
+             "visual": "limit"},
+            {"title": "Crews: Agents That Work Together", "text": "A crew is named roles, one objective and hard caps, and it runs as one governed session. Planner and executors, a second vendor that re-runs the proof, or a verifier that checks rules before anything leaves the building. Reviewers never grade their own work.",
+             "visual": [("label", "CREW · ONE GOVERNED SESSION"), ("kv", "Planner", "Makes the plan"), ("kv", "Executors", "Build units in parallel"), ("kv", "Verifier", "Checks rules before release"), ("kv", "Review rounds", "3")]},
+            {"title": "Tier-3 Actions Wait for a Human", "text": 'Only Tier-3 actions interrupt you, in the approvals inbox. Everything else is checked by rules and logged in one <a href="/product/audit-trail">AI audit trail</a>.',
+             "visual": [("label", "APPROVALS INBOX"), ("note", "Email the carrier about route latency"), ("kv", "Tier", "3 · needs human sign-off"), ("ok", "Every step logged")]},
         ],
-        [{"title": "Chat Mode", "text": "An AI assistant for everyday work.", "href": "/product/chat", "more": "See Chat Mode"},
-         {"title": "Builder Mode", "text": "Compare more than one model side by side.", "href": "/product/builder", "more": "See Builder Mode"},
+        [{"title": "Chat Mode", "text": "An answer, a draft or a thinking partner.", "href": "/product/chat", "more": "See Chat Mode"},
+         {"title": "Builder Mode", "text": "A finished thing, planned first.", "href": "/product/builder", "more": "See Builder Mode"},
          {"title": "RenOS for IT", "text": "AI system administration without the sprawl.", "href": "/teams/it", "more": "See the IT page"}],
-        [("What is an AI agent in RenOS?", "An agent is an AI worker with its own identity and role. Several can work on one task under the same rules."),
-         ("Can AI agents talk to each other?", "Yes. Agents hand work to each other, and every handoff is recorded."),
-         ("Who checks the agents' work?", "You decide where a person reviews the work before it's accepted, and the review is part of the record.")],
-        "product-agents", h1_accent="Together on One Task", hero_visual="workspace"))
+        [("What is an AI agent in RenOS?", "An agent is an AI worker that does or watches something in your other systems, through connectors, under an approval tier and a hard cap."),
+         ("Can AI agents work together?", "Yes. A crew runs several agents with named roles on one objective, as one governed session, and every handoff is recorded."),
+         ("Who checks the agents' work?", "Reviewers never grade their own work. An independent verifier checks rules, and Tier-3 actions always wait for a human."),
+         ("Can an agent run up a big bill?", "No. Agent tasks and crews always carry a hard ceiling, and the run stops when it reaches it.")],
+        "product-agents", h1_accent="Always Capped", hero_visual="workspace"))
 
     P.append(feature_page(
         "/product/routing", "Policy Routing", "Policy Routing: Use Any AI Model by the Rules",
-        "Policy routing lets your team use any AI model under rules for data sensitivity, task type and role, enforced before a model is called. Book a live demo.",
+        "Policy routing lets your team use any AI model under rules for data sensitivity, task type and role, enforced before a model is called. Book a pilot today.",
         "Policy Routing", "Use Any Model.", "Different AI models are good at different things. RenOS lets your team run AI on any model you approve, and your rules decide which one each task uses.",
         [
             {"title": "Rules by Sensitivity, Task and Role", "text": "Set rules by data sensitivity, task type and user role. They run at routing time, before any model sees the task.",
              "visual": "supply"},
             {"title": "A Plain-Language Routing Rationale", "text": "Every decision comes with a reason anyone can read.",
              "visual": [("label", "ROUTING RATIONALE"), ("note", "Contains tenant data, so policy sent this to an approved model.")]},
-            {"title": "The Right Model for the Stakes", "text": 'Cheaper models for low-stakes work, approved models for sensitive work. Track it in the <a href="/product/admin">admin dashboard</a>.',
-             "visual": [("kv", "Low-stakes task", "Lower-cost model"), ("kv", "Sensitive task", "Approved model"), ("ok", "Choice logged with reason")]},
+            {"title": "Locked Models Explain Themselves", "text": "Only models your policy allows for a task are selectable. Locked rows show the rule that blocked them, so nobody has to guess.",
+             "visual": "routing"},
+            {"title": "Route Profiles and Caps", "text": 'Pick Economy, Balanced, Max quality or Private. Monthly caps send alerts at 50, 80 and 100%, and routing downshifts to Economy at the cap. Track it in the <a href="/product/admin">admin dashboard</a>.',
+             "visual": [("label", "ROUTE PROFILE"), ("kv", "Profile", "Balanced"), ("kv", "At the cap", "Downshift to Economy"), ("ok", "Choice logged with reason")]},
         ],
         [{"title": "AI Audit Trail", "text": "Every routing decision lands in the record.", "href": "/product/audit-trail", "more": "See the audit trail"},
          {"title": "Supported AI Models", "text": "Hundreds of models, one governed workspace.", "href": "/models", "more": "See supported models"},
          {"title": "RenOS for Compliance", "text": "AI governance for compliance teams.", "href": "/teams/compliance", "more": "See the compliance page"}],
         [("Can we really use any model?", "You can use any model your admin approves. Policy decides which one each task may use."),
+         ("Can people pick a model by hand?", "Yes. Auto is the default, and a manual choice is a governed override that's logged like everything else."),
          ("When are rules enforced?", "At routing time, before any model is called."),
          ("Why do different AI models matter?", "Models differ in strength and cost. Routing lets you match each task to the right one without asking people to choose.")],
         "product-routing", h1_accent="Your Rules Decide Which.", hero_visual="task"))
 
     P.append(feature_page(
         "/product/audit-trail", "Audit Trail", "AI Audit Trail for Every Agent and Model",
-        "The RenOS AI audit trail records every task: user, model, policy, output and overrides, readable by a non-technical reviewer and exportable. Book a demo.",
+        "The RenOS AI audit trail records every task: user, model, policy, output and overrides, readable by a non-technical reviewer and exportable. Book a pilot.",
         "Audit Trail", "An AI Audit Trail Your Admin", "AI and audit don't usually mix well. RenOS writes an audit entry for every task automatically, in language a reviewer can follow without help.",
         [
             {"title": "What Each Entry Holds", "text": "The user, the task, the model or models used, the policy applied, the output reference and any overrides.",
              "visual": [("label", "AUDIT ENTRY"), ("kv", "User", "Leasing team"), ("kv", "Models", "1 approved model"), ("kv", "Policy", "Tenant data"), ("kv", "Overrides", "None")]},
             {"title": "Readable by a Non-Technical Reviewer", "text": "Each entry starts with a plain-language summary of what happened and why that model was chosen.",
              "visual": [("label", "IN PLAIN LANGUAGE"), ("note", "A leasing agent asked for a renewal notice. Policy required an approved model. Accepted with no overrides.")]},
+            {"title": "Tamper-Evident by Design", "text": "Each record is chained to the one before it. Any change breaks the chain and shows up on verification.",
+             "visual": [("label", "CHAIN"), ("kv", "GS-20417", "Sealed"), ("kv", "GS-20418", "Sealed"), ("ok", "Chain intact")]},
             {"title": "Exportable", "text": 'Audit logs export cleanly for reviews. See <a href="/security">security and data</a> for how logs are kept.',
-             "visual": [("kv", "Export", "Ready"), ("kv", "Retention", "Set by plan"), ("ok", "Written automatically")]},
+             "visual": [("kv", "Export", "Ready"), ("kv", "Retention", "90 days Pro · 1 year+ Enterprise"), ("ok", "Written automatically")]},
         ],
         [{"title": "Policy Routing", "text": "The rules behind every entry.", "href": "/product/routing", "more": "See policy routing"},
          {"title": "Admin Dashboard", "text": "Company AI controls for spend, policy and access.", "href": "/product/admin", "more": "See the admin dashboard"},
@@ -733,7 +758,7 @@ def pages():
         [
             {"title": "Who Ran What", "text": "Who ran each task, on which model, under which policy, at what cost.",
              "visual": [("label", "THIS WEEK"), ("kv", "Tasks", "All logged"), ("kv", "Teams", "6"), ("kv", "Policy exceptions", "None")]},
-            {"title": "Per-Team Spend Caps", "text": "Set caps by team and let the system enforce them.",
+            {"title": "Per-Team Spend Caps", "text": "Set caps per team and per user, with alerts at 50, 80 and 100%. Agent tasks get a hard ceiling.",
              "visual": "budgets"},
             {"title": "Work Pauses at the Cap", "text": "When a team reaches its cap, work pauses instead of overspending. People can pick a cheaper model or ask an owner to approve more, and agent runs stop at their per-task ceiling.",
              "visual": "limit"},
@@ -745,7 +770,8 @@ def pages():
          {"title": "RenOS for Finance", "text": "AI spend control down to the task.", "href": "/teams/finance", "more": "See the finance page"}],
         [("What can admins change?", "Which models and suppliers each task may use, rules by data sensitivity, task type and role, and spend caps per team."),
          ("Do admin seats cost extra?", "No. Admin, auditor and read-only compliance seats are always free."),
-         ("When do rule changes take effect?", "On the next task.")],
+         ("When do rule changes take effect?", "On the next task. Every rule is simulated before it's published."),
+         ("When do budget alerts fire?", "At 50, 80 and 100% of each cap.")],
         "product-admin", h1_accent="Under Your Control", hero_visual="oversight"))
 
     # ---------------- Models
@@ -755,7 +781,7 @@ def pages():
         "description": "RenOS gives your team hundreds of AI models in one governed workspace, across text, image, audio and video, with the admin deciding which may be used.",
         "hero": {"eyebrow": "Supported AI Models", "h1": "Hundreds of AI Models,", "h1_accent": "One Governed Workspace",
                  "lede": "RenOS reaches hundreds of AI models through one workspace. Your admin decides which models and suppliers each task may use, and every choice is logged.",
-                 "buttons": [("Book a Demo", "/contact"), ("See Policy Routing", "/product/routing", "ghost")],
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Policy Routing", "/product/routing", "ghost")],
                  "visual": {"shot": "models-hero", "fallback": [("label", "APPROVED FOR THIS TASK"), ("kv", "Text and reasoning", "Approved"),
                             ("kv", "Image", "Approved"), ("kv", "Audio", "Not for this role"), ("ok", "Choice logged with reason")]}},
         "sections": [
@@ -766,7 +792,8 @@ def pages():
                 {"title": "Video", "text": "Video tasks routed to the models you approve."}]},
             {"type": "cards", "h2": "You Decide Which Models Are Used", "items": [
                 {"title": "Approve Models and Suppliers", "text": "Set which agent models and suppliers each task may use, by data sensitivity, task type and role."},
-                {"title": "Switch Without Retraining", "text": "People keep working the same way when you change suppliers."},
+                {"title": "Switch Without Retraining", "text": "Frontier and open models behind one interface, so people keep working the same way when you change suppliers."},
+                {"title": "Three Ways to Supply a Model", "text": 'Vocom credits, your own keys or local models on your own hardware. See <a href="/credits">RenOS Credits</a>.'},
                 {"title": "Every Choice Logged", "text": 'Each routing choice and its reason lands in the <a href="/product/audit-trail">AI audit trail</a>.'}]},
             {"type": "faq", "h2": "Frequently Asked Questions", "items": [
                 ("How many AI models does RenOS support?", "Hundreds, through one workspace, across text and reasoning, image, audio and video."),
@@ -795,10 +822,10 @@ def pages():
     P.append({
         "route": "/teams", "crumb": "Teams",
         "title": "RenOS for Every Team: Sales, IT, Compliance",
-        "description": "RenOS is AI for every team: sales, compliance, IT, operations, coaching and finance, all on one governed workspace with one audit trail. Book a demo.",
+        "description": "RenOS is AI for every team: sales, compliance, IT, operations, coaching and finance, all on one governed workspace with one audit trail. Book a pilot.",
         "hero": {"eyebrow": "Teams", "h1": "RenOS for Every Team",
                  "lede": "Every AI team looks different. Sales wants speed, compliance wants evidence, finance wants a single bill. RenOS gives each team AI at work under one set of rules.",
-                 "buttons": [("Start a Pilot", "/pilot"), ("Book a Demo", "/contact", "ghost")]},
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Solutions", "/solutions", "ghost")]},
         "sections": [
             {"type": "cards", "h2": "Choose Your Team", "items": [
                 {"title": t["name"], "text": t["intro"].split(". ")[0] + ".", "href": f"/teams/{t['slug']}", "accent": t["accent"], "more": f"RenOS for {t['name']}"} for t in TEAMS]},
@@ -818,10 +845,10 @@ def pages():
     P.append({
         "route": "/industries", "crumb": "Industries",
         "title": "RenOS by Industry: Governed AI for Your Sector",
-        "description": "Governed AI built around your industry, from dental groups and credit unions to real estate, insurance, fintech and MSPs. Book a live demo of RenOS today.",
+        "description": "Governed AI built around your industry, from dental groups and credit unions to real estate, insurance, fintech and MSPs. Book a 60-day RenOS pilot.",
         "hero": {"eyebrow": "Industries", "h1": "Governed AI, Built Around", "h1_accent": "Your Industry",
                  "lede": "Organizations with a compliance duty, client confidentiality or a growing AI bill need company AI they can prove. RenOS adapts its policy and records to your sector.",
-                 "buttons": [("Book a Demo", "/contact"), ("Start a Pilot", "/pilot", "ghost")]},
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Solutions", "/solutions", "ghost")]},
         "sections": [
             {"type": "cards", "h2": "Choose Your Industry", "items": [
                 {"title": i["name"], "text": i["intro"].split(". ")[0] + ".", "href": f"/industries/{i['slug']}", "accent": i["accent"], "more": f"AI for {i['name']}"} for i in INDUSTRIES]},
@@ -830,192 +857,318 @@ def pages():
                 {"title": "Data Where You Decide", "text": 'Private deployment keeps data in your environment. See <a href="/security">security and data</a>.'},
                 {"title": "Evidence on Request", "text": 'Exportable entries from the <a href="/product/audit-trail">AI audit trail</a>.'}]},
             {"type": "faq", "h2": "Frequently Asked Questions", "items": [
-                ("Is RenOS certified for regulated industries?", "Not yet. SOC 2 preparation is planned. Today you get policy enforced before any model is called, exportable audit logs and a private deployment option."),
+                ("Is RenOS certified for regulated industries?", 'We won\'t claim a certification until it is in hand. Today you get policy enforced before any model is called, a tamper-evident audit trail and a private deployment option. See <a href="/security">security</a>.'),
                 ("Can regulated data go through a pilot?", "No. Regulated data stays out of pilots until the right agreement is in place."),
                 ("Is my industry missing?", 'RenOS works for any organization that has to answer for its AI. <a href="/contact">Get in touch</a>.')]},
         ],
     })
     P += [collection_page(i, "industries") for i in INDUSTRIES]
 
+    # ---------------- Governance
+    P.append({
+        "route": "/governance", "crumb": "Governance", "software": True, "software_name": "RenOS Governance",
+        "title": "AI Governance Platform: A Record a Stranger Can Read",
+        "description": "RenOS is the AI governance layer for your team: plain-English policies tested before they go live, a tamper-evident audit trail and admin oversight.",
+        "hero": {"eyebrow": "The Governance Layer for AI at Work", "h1": "A Record a Stranger", "h1_accent": "Can Read.",
+                 "lede": "Each task is one governed session: who ran it, on which model, under which policy, with what outcome. It writes itself, so nobody has to remember to document anything.",
+                 "buttons": [("Book a Pilot", "/pilot"), ("Read the Security Overview", "/security", "ghost")]},
+        "sections": [
+            {"type": "split", "eyebrow": "The Governed Session", "h2": "The Audit Trail Is the Product",
+             "lede": 'Not a log you export at the end of the quarter, but a record written as the work happens. See the <a href="/product/audit-trail">AI audit trail</a>.',
+             "bullets": SESSION_BULLETS,
+             "summary": "A team member asked for a rent-increase notice. Because it involved confidential tenant data, policy required an approved frontier model. It ran in 4.2 seconds. The result was accepted. No overrides.",
+             "timeline": TIMELINE},
+            {"type": "visual", "eyebrow": "Policies", "h2": "Rules in Plain English, Tested Before They Go Live",
+             "lede": 'Start from an industry pack, describe the rule in plain English, or build a WHEN / THEN rule from scratch. Nothing is live until you simulate and publish. See <a href="/solutions">industry packs</a>.',
+             "visual": "rule"},
+            {"type": "stats", "eyebrow": "Admin Oversight", "h2": "Is Governance Working, and Is It Worth Renewing?",
+             "lede": 'One place to see sessions, cost and policy activity, and to change a rule that applies to the next task. See the <a href="/product/admin">admin dashboard</a>.',
+             "items": [("1,284", "governed sessions this month"), ("214 / wk", "hits on the busiest rule"), ("0", "unlogged overrides"),
+                       ("$38 / $100" if SHOW_PRICES else "38%", "org monthly budget used" if not SHOW_PRICES else "org monthly budget")],
+             "foot": "Illustrative sample data.",
+             "after": {"type": "cards", "items": [
+                 {"title": "Audit Export", "text": "Evidence a regulator or auditor can open, with retention of 90 days on Pro and a year or more on Enterprise."},
+                 {"title": "Approval Tiers", "text": "Every action has a tier. Tier-3 actions need a human before they run, and every override is logged."},
+                 {"title": "Budgets and Caps", "text": 'Caps per team and per user with alerts at 50, 80 and 100%. Agent tasks get a hard ceiling. See <a href="/credits">RenOS Credits</a>.'}]}},
+            {"type": "faq", "h2": "Governance Questions", "items": [
+                ("What is a governed session?", "One task from request to accepted result: who ran it, on which model, under which policy, with what outcome, written as the work happens."),
+                ("Can a record be changed after the fact?", "Each record is chained to the one before it. Any change breaks the chain and shows up on verification."),
+                ("How are new rules tested?", "Every rule is linted and simulated against the last 30 days of sessions before it's published. Lint and simulation are deterministic; no model grades its own policy."),
+                ("How long are records kept?", "90 days on Pro, and a year or more with export on Enterprise.")]},
+        ],
+        "cta": {"h2": "See the Record for Yourself", "text": "Book a pilot and open a governed session from your own workflow."},
+    })
+
+    # ---------------- Solutions
+    P.append({
+        "route": "/solutions", "crumb": "Solutions",
+        "title": "AI Solutions for Regulated, People-Heavy Teams",
+        "description": "Governed AI for healthcare, property management, credit unions, professional services, real estate and MSPs, with policy packs for each. Book a pilot.",
+        "hero": {"eyebrow": "Built for Regulated, People-Heavy Work", "h1": "Governed AI for the Teams", "h1_accent": "That Can't Afford a Guess.",
+                 "lede": "Healthcare, property, credit unions, professional services and the MSPs who serve them. Same layer, with policy packs shaped to how each one actually works.",
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Pricing", "/pricing", "ghost")]},
+        "sections": [
+            {"type": "cards", "eyebrow": "Who It's For", "h2": "Pick Your World",
+             "lede": "Each pack starts with sensible rules, connectors and sample workflows, so a pilot team is productive on day one.", "items": [
+                 {"title": "Healthcare Practices", "text": "Patient records stay on approved or local models. Every draft that touches PHI has a receipt, a model and a reviewer.", "href": "/industries/dental-groups", "more": "AI for dental groups"},
+                 {"title": "Property Management", "text": "Tenant notices, maintenance triage and owner reports with a record of who approved what.", "href": "/industries/property-management", "more": "AI for property management"},
+                 {"title": "Credit Unions", "text": "Member communications and policy answers under rules your examiners can read.", "href": "/industries/credit-unions", "more": "AI for credit unions"},
+                 {"title": "Professional Services", "text": "Client work stays inside client boundaries. Time, cost and model use roll up per matter.", "href": "/industries/professional-services", "more": "AI for professional services"},
+                 {"title": "Managed Service Providers", "text": "Run one governed workspace per client from a single admin view, alongside the services you already provide.", "href": "/industries/msps", "more": "AI for MSPs"},
+                 {"title": "Real Estate Teams", "text": "Listings, disclosures and follow-ups drafted fast, with approvals before anything goes out.", "href": "/industries/real-estate", "more": "AI for real estate"}]},
+            {"type": "cards", "eyebrow": "What a Rule Looks Like", "h2": "Same Engine, Different Vocabulary", "foot": "Examples are illustrative. Packs are starting points you edit and simulate before publishing.", "items": [
+                {"title": "Healthcare", "plain": True, "rule": [("When", "Source is the patient-records drive"), ("Then", "Allow approved or local models only. Log every override.")]},
+                {"title": "Property Management", "plain": True, "rule": [("When", "Draft is a rent-increase notice"), ("Then", "Require manager approval before sending.")]},
+                {"title": "Credit Union", "plain": True, "rule": [("When", "Topic is lending policy"), ("Then", "Answer only from the current policy document, and cite the section.")]}]},
+            {"type": "chips", "eyebrow": "More Industries", "h2": "Every Industry We Serve",
+             "lede": 'See every <a href="/industries">industry page</a>, or how RenOS fits each <a href="/teams">team</a>.',
+             "items": [(i["name"], f"/industries/{i['slug']}") for i in INDUSTRIES]},
+            {"type": "cards", "eyebrow": "By Team", "h2": "Governed AI for Every Team", "items": [
+                {"title": t["name"], "text": t["menu"] + ".", "href": f"/teams/{t['slug']}", "accent": t["accent"], "more": f"RenOS for {t['name']}"} for t in TEAMS]},
+        ],
+        "cta": {"h2": "Tell Us Your Industry", "text": "We'll set up the matching pack for your pilot team."},
+    })
+
+    # ---------------- Credits
+    P.append({
+        "route": "/credits", "crumb": "Credits", "software": True, "software_name": "RenOS Credits",
+        "title": "RenOS Credits: One Balance for Every AI Model",
+        "description": "RenOS Credits pay for AI model use across providers with no markup. Every call is metered, receipted and tied to a governed session, with hard caps.",
+        "hero": {"eyebrow": "Model Credits Supplied by Vocom", "h1": "One Balance for Every Model.", "h1_accent": "No Markup on Usage.",
+                 "lede": 'Credits pay for model use across providers. Every call is metered, receipted and tied to a governed session, so cost is as auditable as the work. See <a href="/product/credits">how credits work, step by step</a>.',
+                 "buttons": [("Book a Pilot", "/pilot"), ("See Plans", "/pricing", "ghost")]},
+        "sections": [
+            {"type": "stats", "tight": True, "items": [
+                ("1 credit", "= $0.01" if SHOW_PRICES else "of model usage"), ("0%", "markup on model usage"),
+                ("Per call", "metered and receipted"), ("Hard caps", "per user, team and agent run")]},
+            {"type": "split", "eyebrow": "Every Call, Accounted For", "h2": "Cost Lives Next to the Proof",
+             "lede": 'Each receipt links usage to the session, the policy and the person. Finance sees spend by team. Compliance sees the same record in the <a href="/product/audit-trail">audit trail</a>.',
+             "visual": "receipt"},
+            {"type": "cards", "eyebrow": "Where Models Come From", "h2": "Three Ways to Supply a Model",
+             "lede": 'Policy decides which are allowed for each task. Locked options always say why. See <a href="/product/routing">policy routing</a>.', "items": [
+                 {"title": "Vocom Credits", "text": "Pay as you go across approved cloud models with one balance and one invoice."},
+                 {"title": "Bring Your Own Key", "text": "Use your own provider account. Keys are stored encrypted and never placed in prompts."},
+                 {"title": "Local Models", "text": "Run on your own hardware at zero credit cost for work that must stay on-premises."}]},
+            {"type": "cards", "eyebrow": "Stay in Budget", "h2": "Caps That Act Before the Bill Does", "items": [
+                {"title": "Budgets", "text": "Set monthly caps per org, team and user. Alerts at 50, 80 and 100%."},
+                {"title": "Route Profiles", "text": "Economy, Balanced, Max quality and Private. Downshift to Economy automatically at the cap."},
+                {"title": "Agent Ceilings", "text": "Agent tasks and crews always carry a hard limit, so a runaway job can't spend your month."}]},
+            {"type": "cards", "eyebrow": "How Topping Up Works", "h2": "From Balance to Back to Work in Four Steps", "cols": 4,
+             "lede": 'Want the full picture, from budgets to the audit record? Read <a href="/product/credits">how RenOS credits work</a>.', "items": [
+                 {"num": "1", "title": "Check Balance", "text": "See credits, spend and caps in one view."},
+                 {"num": "2", "title": "Choose an Amount", "text": "Preset packs or a custom amount."},
+                 {"num": "3", "title": "Confirm Payment", "text": "Card, or invoice for teams."},
+                 {"num": "4", "title": "Back to Work", "text": "Balance updates and sessions resume."}]},
+            {"type": "faq", "h2": "Credit Questions", "items": [
+                ("What is a RenOS credit?", "One credit is one cent of model usage" + (", so 1 credit = $0.01" if SHOW_PRICES else "") + ". A task that costs 31 cents at the provider uses 31 credits."),
+                ("Do you mark up model usage?", "No. Credits are spent at each model's published rate. When a provider cuts prices, your cost drops the same day."),
+                ("Who supplies the credits?", "Credits are supplied through our carrier partner Vocom. You can also bring your own keys on Enterprise, or run local models at zero credit cost."),
+                ("Do credits expire?", "Pro's included credits pool across your team each month. Purchased credits stay valid for 12 months.")]},
+        ],
+        "cta": {"h2": "Start With Credits Included", "text": "Pilots come with a starter balance and caps already set."},
+    })
+
     # ---------------- Pricing
     P.append({
         "route": "/pricing", "crumb": "Pricing",
         "title": "RenOS Pricing: Pilot, Pro and Enterprise",
-        "description": "RenOS pricing for the Pilot, Pro and Enterprise plans, with free admin, auditor and compliance seats. Talk to sales for a quote, or book a live demo today.",
-        "hero": {"eyebrow": "Pricing", "h1": "Simple Pricing for Governed AI",
-                 "lede": "Pay for governed seats. One subscription covers governance: policy routing, the audit trail and admin oversight. Model usage runs on RenOS Credits, and every task shows exactly what it cost."},
+        "description": "RenOS pricing: pay for governed seats and use every AI model at its list price with no markup. Pilot, Pro and Enterprise plans, with free admin seats.",
+        "hero": {"eyebrow": "Pricing", "h1": "Pay for Governed Seats.", "h1_accent": "Use Every Model at Its List Price.",
+                 "lede": 'One subscription covers governance: policy routing, the audit trail and admin oversight. Model usage runs on <a href="/credits">RenOS Credits</a>, billed at each provider\'s published rate with no markup.'},
         "sections": [
-            {"type": "pricing", "eyebrow": "Plans", "h2": "Choose a Plan", "plans": [
-                {"name": "Pilot", "blurb": "Prove it on one team before you commit.", "cta": ("Start a Pilot", "/pilot"),
+            {"type": "pricing", "tight": True, "sr_h2": "Plans", "plans": [
+                {"name": "Pilot", "blurb": "Prove it on one team before you commit.", "cta": ("Book a Pilot", "/pilot"),
                  "price": "$1,500", "unit": "flat, 60 days", "terms": "Fully credited to your first annual plan",
                  "features": ["Up to 15 seats, all Pro features", "Usage credits included",
-                              "A written success plan with weekly governed-task reports"],
+                              "A written success plan with weekly governed-session reports", "Your fee credited to year one if you continue"],
                  "features_priced": ["Up to 15 seats, all Pro features", "$150 of RenOS Credits included",
-                                     "A written success plan with weekly governed-task reports", "Your fee credited to year one if you continue"]},
+                                     "A written success plan with weekly governed-session reports", "Your fee credited to year one if you continue"]},
                 {"name": "Pro", "tag": "Most Teams Start Here", "blurb": "Governed AI for teams of 5 to 100.", "featured": True,
-                 "cta": ("Talk to Sales", "/contact"), "cta_priced": ("Start With Pro", "/contact"),
-                 "price": "$35", "price_monthly": "$42", "unit": "per seat / month", "terms": "5-seat minimum",
-                 "features": ["Chat, Builder and Agent modes, split view", "Every approved model through RenOS Credits",
+                 "cta": ("Talk to Sales", "/contact?type=pricing"), "cta_priced": ("Start With Pro", "/contact?type=pricing"),
+                 "price": "$35", "price_monthly": "$42", "unit": "per seat / month", "terms": "$42 month-to-month · 5-seat minimum",
+                 "features": ["Chat, Builder and Agent modes, split view", "Every model through RenOS Credits",
                               "Policy routing with plain-language reasons", "Audit trail with 90-day retention",
                               "Admin dashboard and team spend caps", "Usage credits per seat, pooled monthly"],
-                 "features_priced": ["Chat, Builder and Agent modes, split view", "Every approved model through RenOS Credits",
+                 "features_priced": ["Chat, Builder and Agent modes, split view", "Every model through RenOS Credits",
                                      "Policy routing with plain-language reasons", "Audit trail with 90-day retention",
                                      "Admin dashboard and team spend caps", "$5 of credits per seat, pooled monthly"]},
-                {"name": "Enterprise", "blurb": "For regulated organizations and existing AI contracts.", "cta": ("Talk to Sales", "/contact"),
+                {"name": "Enterprise", "blurb": "For regulated orgs and existing AI contracts.", "cta": ("Talk to Sales", "/contact?type=pricing"),
                  "price": "From $60", "unit": "per seat / month", "terms": "Billed annually · 25-seat minimum",
                  "features": ["Everything in Pro", "Bring your own model keys", "SSO and SCIM provisioning",
-                              "Audit retention of one year or more, with export", "Custom policies, data residency and supply controls",
-                              "DPA, BAA and an uptime SLA as part of the plan design"]}],
+                              "Audit retention of 1 year or more, with export", "Custom policies, data residency and supply controls",
+                              "DPA, BAA and an uptime SLA"]}],
              "extras": [
-                 {"title": "Private Deployment", "text": 'Run RenOS on your own infrastructure. Available as an add-on. See <a href="/security">security and data</a>.',
-                  "text_priced": 'From $1,500 per environment per month. Run RenOS on your own infrastructure. See <a href="/security">security and data</a>.'},
+                 {"title": "Private Deployment", "text": 'Run RenOS on your own infrastructure with local models. Available as an add-on. See <a href="/security">security</a>.',
+                  "text_priced": 'From $1,500 per environment per month. Run RenOS on your own infrastructure with local models. See <a href="/security">security</a>.'},
                  {"title": "Free Admin Seats", "text": "Admins, auditors and read-only compliance reviewers never count as paid seats."}]},
-            {"type": "cards", "eyebrow": "RenOS Credits", "h2": "Model Usage, Priced the Way Models Are Priced", "cols": 4,
-             "lede": 'You see exactly what every task cost, in the same record that shows why it ran. See <a href="/product/credits">how RenOS credits work</a>, step by step.',
+            {"type": "cards", "eyebrow": "RenOS Credits", "h2": "Model Usage, Priced the Way the Providers Price It", "cols": 4,
+             "lede": 'Credits are supplied through our carrier partner Vocom and spent at each model\'s published rate. You see exactly what every task cost, in the same record that shows why it ran. See <a href="/product/credits">how RenOS credits work</a>.',
              "items": [
-                 {"title": "Credits Track Real Usage", "text": "Each task spends credits at its model's published rate, so cost follows the work."},
-                 {"title": "Cost in the Audit Trail", "text": "Every governed task records the model, the credits spent and the policy that chose it."},
-                 {"title": "Budgets You Control", "text": 'Set caps per team and per user, with alerts as they fill up. Agent tasks get a hard ceiling. See the <a href="/product/admin">admin dashboard</a>.'},
-                 {"title": "Cheaper Models for Routine Work", "text": 'Policy can send low-stakes tasks to lower-cost models. See <a href="/product/routing">policy routing</a>.'}]},
+                 {"title": "1 Credit = $0.01" if SHOW_PRICES else "Credits Track Real Usage",
+                  "text": "Credits are dollars, not an abstract token. A task that costs $0.31 at the provider uses 31 credits." if SHOW_PRICES else "Each task spends credits at its model's published rate, so cost follows the work."},
+                 {"title": "No Markup, Ever", "text": "We charge the provider's list price. When a provider cuts prices, your cost drops the same day."},
+                 {"title": "Cost in the Audit Trail", "text": 'Every governed session records the model, the credits spent and the policy that chose it. See the <a href="/product/audit-trail">audit trail</a>.'},
+                 {"title": "Budgets You Control", "text": 'Set caps per team and per user, with alerts at 50, 80 and 100%. Agent tasks get a hard ceiling. See the <a href="/product/admin">admin dashboard</a>.'}]},
             {"type": "compare", "eyebrow": "Compare Plans", "h2": "What Changes Between Pro and Enterprise", "cols": ["Pro", "Enterprise"], "rows": [
                 ("Governed seats", {"cells": ["Talk to Sales", "Talk to Sales"], "cells_priced": ["$35 / month, annual", "From $60 / month, annual"]}),
                 ("Minimum seats", "5", "25"),
-                ("Credits included", "Pooled per seat", "Pay as you go"),
+                ("Credits included", {"cells": ["Pooled per seat", "Pay as you go"], "cells_priced": ["$5 per seat, pooled", "Pay as you go"]}),
                 ("Bring your own model keys", None, "Included"),
-                ("Audit retention", "90 days", "One year or more, with export"),
+                ("Audit retention", "90 days", "1 year or more, with export"),
                 ("Single sign-on and SCIM", None, "Included"),
-                ("Model supply controls", "Standard", "Per data class"),
+                ("Model supply controls", "Standard", "Verified-only or Exchange, per data class"),
                 ("Private or local deployment", None, "Add-on"),
-                ("DPA, BAA and SLA", "DPA", "DPA, BAA and uptime SLA")]},
+                ("DPA, BAA and SLA", "DPA", "DPA, BAA and 99.5% SLA")]},
             {"type": "faq", "eyebrow": "Questions", "h2": "Pricing Questions", "items": [
-                ("Is there a free plan?", 'No. RenOS governs teams, so a solo free seat wouldn\'t show you what it does. Start with a <a href="/pilot">60-day pilot</a> instead.'),
-                ("What happens to unused credits?", "Pro's included credits pool across your team each month. Talk to us about purchased credits."),
-                ("Where do the models come from?", 'Through RenOS, or through your own keys on Enterprise. Admins can restrict sensitive data to approved models only. See <a href="/models">supported AI models</a>.'),
+                ("Is there a free plan?", 'No. RenOS governs teams, so a solo free seat wouldn\'t show you what it does. Start with a <a href="/pilot">pilot</a> instead: its fee is credited to your first year.'),
+                ("What happens to unused credits?", "Pro's included credits pool across your team each month. Purchased credits stay valid for 12 months."),
+                ("Where do the models come from?", 'Through our carrier partner Vocom, or your own keys. Admins can restrict sensitive data to verified supply only. See <a href="/credits">RenOS Credits</a>.'),
                 ("Do admins and auditors need a paid seat?", "No. Admin, auditor and read-only compliance seats are always free."),
-                ("Can we use our existing AI contracts?", "Yes, on Enterprise. Bring your own keys and RenOS still applies policy and writes the audit trail."),
-                ("Can partners offer RenOS to their clients?", 'Yes. MSPs and IT partners can offer RenOS to the organizations they support. See the <a href="/partners">partner program</a>.')]},
+                ("Can we use our own model provider contract?", "Yes, on Enterprise. Bring your own keys and RenOS still applies policy and writes the audit trail."),
+                ("Can a partner resell RenOS?", 'Yes. Carriers, MSPs and IT partners can resell RenOS to the organizations they support. See the <a href="/partners">partner program</a>.')]},
         ],
-        "cta": {"h2": "Talk to Sales About Your Team", "text": "Tell us about your team and the work you'd test first, and we'll recommend a plan."},
     })
 
     # ---------------- Pilot
     P.append({
-        "route": "/pilot", "crumb": "60-Day Pilot",
+        "route": "/pilot", "crumb": "Book a Pilot",
         "title": "Get Started With AI: The RenOS 60-Day Pilot",
-        "description": "Get started with AI the governed way. The RenOS 60-day pilot covers up to 15 seats, Pro features and a written success plan. Apply for a pilot today.",
-        "hero": {"eyebrow": "Design-Partner Pilots Are Open", "h1": "Get Started With", "h1_accent": "a 60-Day Pilot",
-                 "lede": "The easiest way to start AI with rules in place. Up to 15 seats, Pro features, usage credits and a written success plan, run on one real workflow.",
-                 "buttons": [("Apply for a Pilot", "#apply"), ("Book a Demo First", "/contact", "ghost")],
-                 "visual": {"shot": "pilot-hero", "fallback": [("label", "PILOT PLAN"), ("kv", "Length", "60 days"), ("kv", "Seats", "Up to 15"),
-                            ("kv", "Includes", "Pro features, usage credits"), ("ok", "Written success plan")]}},
+        "description": "Get started with AI the governed way. The RenOS 60-day pilot covers one team, one real workflow, up to 15 seats and a written success plan. Book a pilot.",
+        "hero": {"eyebrow": "Pilots Are Open", "h1": "Start With One Pilot Team.",
+                 "lede": "Sixty days, one team, one real workflow. You'll see governed sessions, receipts and cost on your own work.",
+                 "aside": [("Week 1", "Kickoff, sign-in setup and your first policy pack."),
+                           ("Weeks 2 to 6", "Team uses it daily. We tune rules from real sessions."),
+                           ("Day 60", "Review the record together and decide what comes next.")],
+                 "form": {"submit": "Request a Pilot", "stack": True, "fields": [
+                     ("name", "Full name", "text", True, None, "Jane Rivera"), ("email", "Work email", "email", True, None, "jane@company.com"),
+                     ("company", "Company", "text", True, None, "Company name"), ("team_size", "Team size", "number", True, None, "e.g. 8"),
+                     ("task", "What would you like to try first?", "text", True, None, "e.g. tenant notices")]}},
         "sections": [
-            {"type": "cards", "eyebrow": "What Happens", "h2": "How the Pilot Runs", "cols": 4, "items": [
-                {"num": "01", "title": "Kickoff and Success Plan", "text": "Agree on the workflow, the people and what success means, in writing."},
-                {"num": "02", "title": "First Workflow Live", "text": 'Your team starts using <a href="/product/chat">Chat</a>, <a href="/product/builder">Builder</a> or <a href="/product/agents">Agent</a> mode on real work.'},
-                {"num": "03", "title": "Review the Audit Trail", "text": 'Walk through the <a href="/product/audit-trail">AI audit trail</a> with your compliance contact.'},
-                {"num": "04", "title": "Results and Decision", "text": "Review results against the written plan and decide what's next."}]},
-            {"type": "cards", "eyebrow": "What You Bring", "h2": "What Your Team Brings", "items": [
-                {"title": "One Real Workflow", "text": "Something your team does often, where AI could help."},
-                {"title": "An Admin", "text": "Someone to set policy and watch the admin view."},
-                {"title": "A Compliance or Risk Contact", "text": "Someone to review the record with us."}]},
-            {"type": "prose", "tight": True, "html": '<h2>What Success Looks Like</h2><p>Success is measured against the written plan you agree to at kickoff, not against someone else\'s numbers. Regulated data stays out of the pilot until the right agreement is in place.</p>'},
-            {"type": "form", "id": "apply", "eyebrow": "Apply", "h2": "Apply for a 60-Day Pilot",
-             "lede": "Tell us about your team and the task you'd test first.", "submit": "Apply for a Pilot", "fields": [
-                 ("name", "Name", "text"), ("email", "Work email", "email"), ("company", "Company", "text"),
-                 ("team_size", "Team size", "select", True, [("", "Choose one"), ("1-15", "1 to 15"), ("16-50", "16 to 50"), ("51-200", "51 to 200"), ("200+", "More than 200")]),
-                 ("task", "The task you'd test first", "textarea")]},
+            {"type": "cards", "eyebrow": "What's Included", "h2": "What the Pilot Includes", "items": [
+                {"title": "Up to 15 Seats", "text": 'All Pro features, including Chat, Builder and Agent modes. See <a href="/pricing">pricing</a>.'},
+                {"title": "Credits Included", "text": ("$150 of RenOS Credits" if SHOW_PRICES else "A starter balance of RenOS Credits") + ' and caps already set. See <a href="/credits">RenOS Credits</a>.'},
+                {"title": "A Written Success Plan", "text": "Agreed at kickoff, with weekly governed-session reports."}]},
+            {"type": "faq", "h2": "Pilot Questions", "items": [
+                ("How much does a pilot cost?", ("$1,500 flat for 60 days, " if SHOW_PRICES else "A flat fee for 60 days, ") + "fully credited to your first annual plan if you continue."),
+                ("What does our team need to bring?", "One real, repeatable workflow, an admin to set policy, and a compliance or risk contact to review the record with us."),
+                ("Can regulated data go through a pilot?", "Regulated data stays out of the pilot until the right agreement is in place.")]},
         ],
         "cta": False,
     })
 
     # ---------------- Security
     P.append({
-        "route": "/security", "crumb": "Security and Data",
+        "route": "/security", "crumb": "Security",
         "title": "RenOS Security: Your Data, Your Environment",
-        "description": "How RenOS handles your data: policy enforced before any model is called, private deployment for your own AI, and exportable audit logs. Book a live demo.",
-        "hero": {"eyebrow": "Security and Data", "h1": "Your Data Stays", "h1_accent": "Where You Decide",
-                 "lede": "Running your own AI shouldn't mean giving up control of your data. RenOS enforces policy before any model is called and can run inside your own environment.",
-                 "buttons": [("Ask a Security Question", "/contact?type=security"), ("Book a Demo", "/contact", "ghost")]},
+        "description": "RenOS security: a tamper-evident audit trail, SSO and SCIM, data residency options, local models and keys kept out of prompts. Request the security pack.",
+        "hero": {"eyebrow": "Security and Trust", "h1": "Built So You Can Show", "h1_accent": "Your Work to an Auditor.",
+                 "lede": "Records are sealed as they are written, access follows your identity provider, and sensitive work can stay on your own machines.",
+                 "buttons": [("Request the Security Pack", "/contact?type=security"), ("Book a Pilot", "/pilot", "ghost")]},
         "sections": [
-            {"type": "cards", "h2": "How RenOS Handles Your Data", "cols": 3, "items": [
-                {"title": "Where Data Goes", "text": "You choose which models and suppliers each task may use, by sensitivity, task type or role."},
-                {"title": "Private or Local Deployment", "text": "Keep data inside your own environment when policy calls for it."},
-                {"title": "Policy Before Any Model", "text": 'Rules are enforced at routing time. See <a href="/product/routing">policy routing</a>.'},
-                {"title": "Admin Control of Suppliers", "text": 'Approve models and suppliers in the <a href="/product/admin">admin dashboard</a>.'},
-                {"title": "Exportable Audit Logs", "text": 'Every task is recorded in the <a href="/product/audit-trail">AI audit trail</a> and exports cleanly.'},
-                {"title": "SOC 2 Preparation", "text": "SOC 2 preparation is planned. We'll say so here when it's done."}]},
+            {"type": "cards", "eyebrow": "What We Do", "h2": "Controls You Can Point To", "items": [
+                {"title": "Tamper-Evident Audit Trail", "text": 'Each record is chained to the one before it. Any change breaks the chain and shows up on verification. See the <a href="/product/audit-trail">audit trail</a>.'},
+                {"title": "Identity and Access", "text": "Single sign-on, SCIM provisioning, roles and per-project permissions."},
+                {"title": "Data Handling", "text": "Data residency options, configurable retention, and export or deletion on request."},
+                {"title": "Local and Offline Models", "text": "Keep confidential work on your own hardware. Policy can require it for chosen data."},
+                {"title": "Keys Never in Prompts", "text": "Provider keys and connector secrets are stored encrypted and never placed in model context."},
+                {"title": "Least-Authority Actions", "text": "Connectors get the minimum scope, and every action carries an approval tier."}]},
             {"type": "split", "eyebrow": "Supply Policy", "h2": "Decide Which Models See Which Data",
-             "lede": "Every data class gets its own list of allowed models. Regulated data stays on approved models, your own keys or a private deployment.",
+             "lede": 'Every data class gets its own list of allowed models. Regulated data stays on approved models, your own keys or local models. See <a href="/product/routing">policy routing</a>.',
              "bullets": ["Set by data sensitivity, task type and role.", "Enforced before any model is called.",
-                         'Every choice logged with its reason in the <a href="/product/audit-trail">AI audit trail</a>.'],
+                         "Locked models show the rule that blocked them."],
              "visual": "supply"},
+            {"type": "cards", "eyebrow": "For Your Review", "h2": "Documents We Can Provide",
+             "lede": "We'll share what applies to your review under NDA. We won't claim a certification until it is in hand.", "items": [
+                 {"title": "Data Processing Agreement", "text": "Standard DPA for customers, with subprocessor list."},
+                 {"title": "Business Associate Agreement", "text": "Part of the Enterprise plan design for healthcare customers. Ask us about your requirements."},
+                 {"title": "Security Questionnaire", "text": "We'll complete yours or share our standard responses."}]},
             {"type": "faq", "h2": "Security Questions", "items": [
-                ("What is your security posture today?", "SOC 2 preparation is planned. Today you get exportable audit logs, policy enforced before any model is called, a private or local deployment option, and regulated data kept out of pilots until the right agreement is in place."),
-                ("Can we run our own AI on our own infrastructure?", "Yes. Private or local deployment keeps data inside your environment."),
-                ("Are BAA and DPA available?", "BAA and DPA are part of the Enterprise plan design. Talk to us about your requirements.")]},
+                ("Do you hold a security certification?", "We won't claim a certification until it is in hand. Today you get a tamper-evident audit trail, SSO and SCIM, local and private deployment options, and the documents above under NDA."),
+                ("Can we run RenOS on our own infrastructure?", 'Yes. Private deployment runs RenOS on your own infrastructure with local models. See <a href="/pricing">pricing</a>.'),
+                ("Are BAA and DPA available?", "A DPA is standard for customers. BAA and DPA are part of the Enterprise plan design. Talk to us about your requirements.")]},
         ],
+        "cta": {"h2": "Questions From Your Security Team?", "text": "Send them our way. We'd rather answer early than late.", "button": ("Contact Us", "/contact?type=security")},
     })
 
     # ---------------- Partners
     P.append({
         "route": "/partners", "crumb": "Partners",
         "title": "RenOS for MSPs and IT Partners",
-        "description": "RenOS for MSPs and IT consultancies: offer governed AI services to every client, manage them all from one admin view, and register deals. Become a partner.",
-        "hero": {"eyebrow": "Partners", "h1": "Offer Governed AI", "h1_accent": "to Every Client",
-                 "lede": "Your clients want AI services they can trust. RenOS lets MSPs and IT consultancies offer governed AI alongside the security and compliance work you already do.",
-                 "buttons": [("Become a Partner", "/contact?type=partner"), ("See AI for MSPs", "/industries/msps", "ghost")]},
+        "description": "RenOS for MSPs, carriers and consultancies: resell or deliver governed AI to every client, with one admin view across clients and credits metered.",
+        "hero": {"eyebrow": "For MSPs, Carriers and Consultancies", "h1": "Bring Governed AI to the", "h1_accent": "Clients You Already Serve.",
+                 "lede": "Offer RenOS alongside your services. One admin view across clients, with the audit trail each of them will ask for.",
+                 "buttons": [("Become a Partner", "/contact?type=partner"), ("Talk to Us", "/contact", "ghost")]},
         "sections": [
-            {"type": "cards", "h2": "Why Partners Work With RenOS", "items": [
-                {"title": "A New Service Line", "text": 'Add governed AI next to your security and compliance services. See <a href="/industries/msps">AI for MSPs</a>.'},
-                {"title": "One Admin View Across Clients", "text": 'Manage policy and spend for every client from the <a href="/product/admin">admin dashboard</a>, without mixing data.'},
-                {"title": "Deal Registration", "text": "Register opportunities so the work you bring stays yours."}]},
+            {"type": "cards", "eyebrow": "Partner Models", "h2": "Three Ways to Work Together", "items": [
+                {"title": "Resell", "text": "Sell RenOS and credits to your clients with your own pricing and billing relationship."},
+                {"title": "Deliver", "text": "Run each client's workspace yourself, with your own library of policy packs and one admin view."},
+                {"title": "Refer", "text": "Introduce clients and we handle onboarding. Simple and low-touch."}]},
+            {"type": "cards", "eyebrow": "What You Get", "h2": "Everything to Deliver and Support It", "items": [
+                {"title": "Multi-Client Admin", "text": "One console, separate workspaces. Roll up usage and policy activity across all clients."},
+                {"title": "Policy Packs", "text": 'Start every client from an industry pack and keep your own library of rules. See <a href="/solutions">solutions</a>.'},
+                {"title": "Enablement", "text": "Onboarding playbooks, demo scripts and sales material so your team is ready quickly."},
+                {"title": "Shared Roadmap", "text": "Partners shape what ships. Tell us what your clients keep asking for."},
+                {"title": "Usage-Based Economics", "text": 'Credits are metered per client, so margins stay clear and predictable. See <a href="/credits">RenOS Credits</a>.'},
+                {"title": "Co-Selling", "text": "Joint calls and case studies once your first clients are live."}]},
+            {"type": "cards", "eyebrow": "How It Starts", "h2": "From Intro to First Client in Three Steps", "items": [
+                {"num": "1", "title": "Intro Call", "text": "We learn your client base and the use cases you see most."},
+                {"num": "2", "title": "Pilot Workspace", "text": "You get a partner workspace and one client pilot to prove it out."},
+                {"num": "3", "title": "Launch", "text": "Agree terms, brand the workspace and roll out to more clients."}]},
             {"type": "faq", "h2": "Partner Questions", "items": [
-                ("Who is the partner program for?", "MSPs and IT consultancies that support organizations with security and compliance needs."),
-                ("Can we pilot with a client first?", 'Yes. Start with a <a href="/pilot">60-day pilot</a> for one client.'),
+                ("Who is the partner program for?", 'MSPs, carriers and IT consultancies that support organizations with security and compliance needs. See <a href="/industries/msps">AI for MSPs</a>.'),
+                ("Are client environments kept separate?", "Yes. One console with separate workspaces, so you see every client without mixing their data."),
                 ("How do we apply?", 'Use the <a href="/contact?type=partner">partner contact form</a> and tell us about your clients.')]},
         ],
-        "cta": {"h2": "Become a RenOS Partner", "text": 'Tell us about your clients and services. <a href="/contact?type=partner">Contact the partner team</a>.'},
+        "cta": {"h2": "Let's Build This Together", "text": "Tell us about your clients and the services you offer today.", "button": ("Become a Partner", "/contact?type=partner")},
     })
 
     # ---------------- About
     P.append({
         "route": "/about", "crumb": "About",
         "title": "About RenOS: The Team Behind Governed AI",
-        "description": "Why we built RenOS: AI spreads through organizations faster than anyone can track it. RenOS is governed AI from Vocom AI. Read our story, then say hello.",
-        "hero": {"eyebrow": "About", "h1": "Why We Built RenOS",
-                 "lede": "AI is spreading through organizations one subscription at a time, and almost nobody can prove what it did. We built RenOS to fix that."},
+        "description": "RenOS by Ren Group gives teams one place to use every AI model, with rules they set and a record they can prove. Meet the team behind the governance layer.",
+        "hero": {"eyebrow": "About RenOS", "h1": "We Build the Layer That Makes", "h1_accent": "AI at Work Accountable.",
+                 "lede": "RenOS by Ren Group gives teams one place to use every model, with rules they set and a record they can prove. Our view: the work should be trusted because it can be shown, not because someone said so.",
+                 "buttons": [("Book a Pilot", "/pilot"), ("Contact Us", "/contact", "ghost")]},
         "sections": [
-            {"type": "prose", "html": '''<h2>The Problem We Kept Seeing</h2>
-<p>Every team we spoke with was already using AI. Sales had one tool, operations another, and a few people had their own. Data went into all of them. When someone asked what the AI had done with a client's information, nobody could answer.</p>
-<h2>Our Approach</h2>
-<p>We think governance should come first and stay invisible. People should be able to use any model that suits the task, while the organization decides the rules and gets a record it can trust. That's why RenOS puts <a href="/product/routing">policy routing</a> before every model call and writes an <a href="/product/audit-trail">AI audit trail</a> automatically.</p>
-<h2>Where We Are</h2>
-<p>Design-partner pilots are open. Multi-agent identities, access to hundreds of models and audit logging have been demoed live, and our design partners help shape what comes next. <a href="/pilot">Join the pilot</a>.</p>
-<h2>Who We Are</h2>
-<p>RenOS is from <a href="https://www.vocom.ai">Vocom AI</a>.</p>'''},
+            {"type": "cards", "eyebrow": "What We Believe", "h2": "Things We Won't Compromise On", "items": [
+                {"title": "Proof Over Promises", "text": "Every claim a model makes should come with a record of how it was produced."},
+                {"title": "Your Rules, Your Data", "text": "Policy belongs to the customer and so does the data. Always."},
+                {"title": "Plain Language", "text": "Rules, receipts and summaries a non-engineer can read and act on."}]},
+            {"type": "cards", "eyebrow": "The Team", "h2": "The People Behind It", "items": [
+                {"title": "Troy", "avatar": True, "meta": "Tech Lead", "text": "Leads architecture and engineering, from the governed session core to the model router."},
+                {"title": "Kevin", "avatar": True, "meta": "Product Manager · Marketing Manager · Sales", "text": "Owns product direction, go-to-market and customer conversations."},
+                {"title": "Cole", "avatar": True, "meta": "Delivery Manager · Product Owner", "text": "Keeps delivery on track and turns customer needs into a clear backlog."}]},
         ],
+        "cta": {"h2": "Work With Us", "text": "Start with one pilot team and see for yourself."},
     })
 
     # ---------------- Contact
     P.append({
         "route": "/contact", "crumb": "Contact",
-        "title": "Book a RenOS Demo",
-        "description": "Book a RenOS demo: in 15 minutes, see one real task routed without picking a model, the routing rationale, the audit entry and the admin view. Book now.",
-        "hero": {"eyebrow": "Book a Demo", "h1": "See RenOS Run", "h1_accent": "on Your Own Work",
-                 "lede": "A 15-minute demo on one real task from your world. No slides about the future."},
-        "sections": [
-            {"type": "cards", "eyebrow": "The 15-Minute Demo", "h2": "What You'll See", "cols": 4, "items": [
-                {"num": "01", "title": "Your Task", "text": "One real task from your world, submitted without choosing a model."},
-                {"num": "02", "title": "The Decision", "text": 'The policy decision and its plain-language <a href="/product/routing">Routing Rationale</a>.'},
-                {"num": "03", "title": "The Record", "text": 'The <a href="/product/audit-trail">audit trail</a> entry, written automatically.'},
-                {"num": "04", "title": "The Admin View", "text": 'Who ran what, on which model, under which policy, at what cost. See the <a href="/product/admin">admin dashboard</a>.'}]},
-            {"type": "form", "id": "form", "h2": "Get in Touch", "submit": "Send Request", "fields": [
-                ("name", "Name", "text"), ("email", "Work email", "email"), ("company", "Company", "text"),
-                ("team_size", "Team size", "select", True, [("", "Choose one"), ("1-15", "1 to 15"), ("16-50", "16 to 50"), ("51-200", "51 to 200"), ("200+", "More than 200")]),
-                ("type", "What can we help with?", "select", True, [("demo", "Book a demo"), ("partner", "Partnership"), ("security", "Security question"), ("other", "Something else")]),
-                ("message", "Message", "textarea", False)]},
-        ],
+        "title": "Contact RenOS: Book a Demo or Talk to a Human",
+        "description": "Contact RenOS about pricing, security, partnerships or anything else. Tell us a bit and we'll route it to the right person within one business day.",
+        "hero": {"eyebrow": "Contact", "h1": "Talk to a Human.",
+                 "lede": "Questions about pricing, security, partnerships or anything else. Tell us a bit and we'll route it to the right person.",
+                 "aside": [("Security Review", 'Ask for the security pack or send your questionnaire. See <a href="/security">security</a>.'),
+                           ("Partnerships", 'MSPs and consultancies: tell us about your clients. See <a href="/partners">partners</a>.')],
+                 "form": {"submit": "Send Message", "stack": True, "fields": [
+                     ("name", "Full name", "text", True, None, "Jane Rivera"), ("email", "Work email", "email", True, None, "jane@company.com"),
+                     ("company", "Company", "text", True, None, "Company name"),
+                     ("type", "Topic", "select", True, [("", "Pricing, security, partnership, other"), ("pricing", "Pricing"), ("security", "Security"), ("partner", "Partnership"), ("demo", "A demo on our own work"), ("other", "Other")]),
+                     ("message", "Message", "textarea", False, None, "How can we help?")]}},
+        "sections": [],
         "cta": False,
+    })
+
+    # ---------------- Thanks (form confirmation)
+    P.append({
+        "route": "/thanks", "crumb": "Thanks", "noindex": True,
+        "title": "Thanks, We've Got It | RenOS", "description": "Your message reached RenOS.",
+        "hero": {"center": True, "h1": "Thanks. We've Got It.",
+                 "lede": "Expect a reply within one business day. In the meantime, here is what to look at next.",
+                 "buttons": [("Explore the Product", "/product"), ("Back to Home", "/", "ghost")]},
+        "sections": [], "cta": False,
     })
 
     # ---------------- Resources
@@ -1044,14 +1197,14 @@ def pages():
         "description": "How RenOS credits work, step by step: top up, set team budgets, run a task with a hold, settle actual usage and see the cost in the audit trail.",
         "hero": {"eyebrow": "RenOS Credits", "h1": "How RenOS Credits Work",
                  "lede": "Every task spends credits for the model usage it actually needs. Here's how a credit moves through RenOS, from the admin's first top-up to the record an auditor reads.",
-                 "buttons": [("Book a Demo", "/contact"), ("See Pricing", "/pricing", "ghost")],
+                 "buttons": [("Book a Pilot", "/pilot"), ("See RenOS Credits", "/credits", "ghost")],
                  "visual": {"shot": "credits-hero", "fallback": "buy"}},
         "sections": [
             {"type": "flow", "id": "steps", "eyebrow": "Step by Step", "h2": "Follow a Credit Through RenOS",
              "lede": "Seven steps, from the admin's billing page to the moment a team hits its cap. These are the screens your admin and your team actually see.",
              "steps": [
-                 ("Buy Credits", "buy", "The admin tops up by card, or by invoice on Enterprise. Auto top-up keeps the balance from running dry."),
-                 ("Set Budgets and Caps", "budgets", 'The admin sets monthly budgets per team and per user, with alerts as they fill. Agent tasks get a hard ceiling so a runaway loop can\'t drain the balance. See the <a href="/product/admin">admin dashboard</a>.'),
+                 ("Buy Credits", "buy", "The admin checks the balance, picks a preset pack or a custom amount, and pays by card, or by invoice for teams. Auto top-up keeps the balance from running dry."),
+                 ("Set Budgets and Caps", "budgets", 'The admin sets monthly caps per org, team and user, with alerts at 50, 80 and 100%. Agent tasks get a hard ceiling so a runaway loop can\'t drain the balance. See the <a href="/product/admin">admin dashboard</a>.'),
                  ("Choose Allowed Models", "supply", 'Every data class gets its own list of allowed models. Regulated data stays on approved models or your own keys. See <a href="/product/routing">policy routing</a>.'),
                  ("Run a Task", "task-hold", "A team member runs a task. Policy picks the model, explains why in plain language, and places a hold for the estimated cost before anything runs."),
                  ("Meter and Settle", "settle", "When the task finishes, RenOS charges for the tokens actually used, releases the rest of the hold, and updates team and organization balances."),
@@ -1059,29 +1212,34 @@ def pages():
                  ("Hit a Budget Limit", "limit", "When a team reaches its cap, work pauses instead of overspending. People can pick a lower-cost model or ask the budget owner to approve more."),
              ]},
             {"type": "cards", "eyebrow": "Key Ideas", "h2": "What Makes Credits Predictable", "cols": 4, "items": [
-                {"title": "Credits Track Real Usage", "text": "Each task is charged for the tokens it actually used, at its model's published rate."},
+                {"title": "No Markup on Usage", "text": "Each task is charged for the tokens it actually used, at its model's published rate."},
                 {"title": "A Hold Before Anything Runs", "text": "The estimated cost is reserved first, so a task never starts without budget to finish."},
                 {"title": "Cost Lives in the Record", "text": "Every task's credits sit next to the model and policy that chose it."},
                 {"title": "Work Pauses at the Cap", "text": "Teams can't overspend. Owners approve increases, and agent runs stop at their ceiling."}]},
             {"type": "faq", "h2": "Frequently Asked Questions", "items": [
-                ("What is a RenOS credit?", 'A credit is the unit RenOS uses for model usage. Each task spends credits based on the tokens it actually used. See <a href="/pricing">RenOS pricing</a> for plans.'),
+                ("What is a RenOS credit?", 'One credit is one cent of model usage' + (', so 1 credit = $0.01' if SHOW_PRICES else '') + '. Each task spends credits for the tokens it actually used, at the model\'s published rate with no markup. See <a href="/pricing">RenOS pricing</a> for plans.'),
                 ("Why does RenOS place a hold before a task runs?", "The hold reserves the estimated cost so the task can finish within budget. When it's done, RenOS charges actual usage and releases the rest."),
                 ("What happens when a team runs out of budget?", "Work pauses instead of overspending. The person can switch to a lower-cost model or ask the budget owner to approve a one-time increase."),
                 ("Can an agent run up a big bill?", "No. Each agent task has a hard ceiling, and the run stops when it reaches it."),
                 ("Where can we see what each task cost?", 'In the admin view and in every audit entry. See the <a href="/product/admin">admin dashboard</a>.'),
-                ("Who can top up credits?", "Org admins, by card or by invoice on Enterprise. Auto top-up can refill the balance when it runs low.")]},
+                ("Who can top up credits?", "Org admins, by card or by invoice for teams. Auto top-up can refill the balance when it runs low."),
+                ("Do purchased credits expire?", "Purchased credits stay valid for 12 months. Pro's included credits pool across your team each month.")]},
         ],
     })
 
     # ---------------- Log in portal (noindex: a door to the app, not a page to rank)
     P.append({
-        "route": "/login", "crumb": "Log In", "noindex": True,
-        "title": "Log In to RenOS",
-        "description": "Sign in to your RenOS workspace with your company account.",
-        "hero": {"eyebrow": "Log In", "h1": "Log In to RenOS",
-                 "lede": 'Sign in to your workspace. Your role and policies come with your company account. Trouble signing in? <a href="/contact">Contact us</a>.',
+        "route": "/login", "crumb": "Sign In", "noindex": True,
+        "title": "Sign In to RenOS",
+        "description": "Sign in to your RenOS workspace with your work account.",
+        "hero": {"eyebrow": "Sign In", "h1": "Sign In to RenOS",
+                 "lede": 'Use your work account. Your role and policies come with it, and we\'ll never post anything. Trouble signing in? <a href="/contact">Contact us</a>.',
                  "visual": "portal"},
-        "sections": [], "cta": False,
+        "sections": [
+            {"type": "cards", "tight": True, "cols": 2, "sr_h2": "Signing In", "items": [
+                {"title": "Check Your Second Factor", "plain": True, "text": "After you sign in, the app asks for the 6-digit code from your authenticator app."},
+                {"title": "Lost Your Device?", "plain": True, "text": 'Use a recovery code or contact your admin. New here? <a href="/pilot">Book a pilot</a> to get started.'}]}],
+        "cta": False,
     })
 
     # ---------------- 404
@@ -1090,7 +1248,7 @@ def pages():
         "title": "Page Not Found, RenOS", "description": "This page doesn't exist.",
         "hero": {"eyebrow": "404", "h1": "This Page Isn't Here",
                  "lede": 'Try the <a href="/">home page</a>, the <a href="/product">product overview</a>, <a href="/pricing">pricing</a> or <a href="/contact">contact us</a>.',
-                 "buttons": [("Go Home", "/"), ("Book a Demo", "/contact", "ghost")]},
+                 "buttons": [("Go Home", "/"), ("Book a Pilot", "/pilot", "ghost")]},
         "sections": [], "cta": False,
     })
     return P
@@ -1153,5 +1311,5 @@ GUIDE_HTML = '''
 
 <h2 id="renos">Where RenOS Fits</h2>
 <p>RenOS is an AI operating system for teams. People pick <a href="/product/chat">Chat</a>, <a href="/product/builder">Builder</a> or <a href="/product/agents">Agent</a> mode and describe the task. <a href="/product/routing">Policy routing</a> picks the model under your rules and explains why in plain language. Every task writes an entry to the <a href="/product/audit-trail">AI audit trail</a>, and the <a href="/product/admin">admin dashboard</a> shows who ran what, on which model, at what cost. It reaches <a href="/models">hundreds of AI models</a> through one workspace.</p>
-<p>Design-partner pilots are open. <a href="/pilot">Start with a 60-day pilot</a> or <a href="/contact">book a demo</a>.</p>
+<p>Pilots are open. <a href="/pilot">Start with a 60-day pilot</a> or <a href="/contact">talk to a human</a>.</p>
 '''

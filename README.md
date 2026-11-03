@@ -1,7 +1,7 @@
 # RenOS website
 
-Static marketing site for RenOS, the AI operating system for teams, from Vocom AI.
-Dark visual design from the approved homepage; sitemap, titles, keywords and copy from the RenOS website spec.
+Static marketing site for RenOS by Ren Group: the governance layer for AI at work.
+Sections, copy and numbers follow the Atlas design (Option A); titles, meta descriptions and keyword pages follow the RenOS website spec.
 
 The HTML pages are generated. Edit the files in `_build/`, then rebuild.
 
@@ -30,8 +30,9 @@ When you are ready for search engines, build with `--prod`. That removes `noinde
 
 ## Switches in `_build/content.py`
 
-- `SHOW_PRICES = False`: pricing cards, the comparison table and the private-deployment card show "Talk to Sales". Set to `True` once prices are cleared for public use.
-- `FORM_ENDPOINT = ""`: the pilot and contact forms tell visitors nothing was sent. Set it to a form service URL (for example a Formspree endpoint) to make them work.
+- `SHOW_PRICES = True`: shows the Atlas prices and dollar figures (plans, comparison table, credit rate, receipts, sample budgets). Set to `False` to replace them with "Talk to Sales" and credit-only wording everywhere.
+- `FORM_ENDPOINT = ""`: the pilot and contact forms tell visitors nothing was sent. Set it to a form service URL (for example a Formspree endpoint) to make them work; a successful send goes to `/thanks`.
+- `APP_URL`: where Sign In hands off (`{APP_URL}/login`).
 
 ## Adding product screenshots
 
@@ -43,12 +44,12 @@ Drop an image into `images/` with one of these names (`.webp` preferred, under 2
 | `product-hero` | Product overview hero |
 | `product-chat`, `product-builder`, `product-agents` | Mode page heroes |
 | `product-routing`, `product-audit-trail`, `product-admin` | Feature page heroes |
-| `models-hero`, `pilot-hero` | Models and pilot heroes |
+| `models-hero` | Models hero |
 | `teams-<slug>` (e.g. `teams-sales`) | Team page heroes |
 | `industries-<slug>` (e.g. `industries-credit-unions`) | Industry page heroes |
 
 ## Not built yet (blocked by the spec's open items)
 
 - Privacy and Terms pages: need real legal text.
-- Team page: needs names, roles, photos and permission.
+- Team photos for the About page (names and roles are in from the Atlas design).
 - Blog posts: each needs a verified, current news hook.

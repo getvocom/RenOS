@@ -342,7 +342,8 @@ svg {
   bottom: 100%;
   height: 14px;
 }
-.mega-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+.mega-inner { display: grid; grid-template-columns: repeat(var(--mega-cols, 2), minmax(0, 1fr)); gap: 4px 12px; }
+.mega-inner:has(> :nth-child(3)) { --mega-cols: 3; }
 .mega-head {
   height: 30px;
   line-height: 16px;
@@ -1230,3 +1231,66 @@ ol.grid-3, ol.grid-4 { list-style: none; }
     transition: none !important;
   }
 }
+
+/* ---------- Atlas design components ---------- */
+
+/* Card extras: badge header, role line, example box, key/value list, rule steps */
+.card-head { display: flex; align-items: center; gap: 12px; }
+.card-head h3 { margin-top: 0; }
+.card-meta { margin-top: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--cyan) !important; }
+.card-example { margin-top: 16px !important; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: rgba(0, 0, 0, 0.18); color: var(--text) !important; font-size: 14px; }
+.card-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 16px 0 0; font-size: 13px; }
+.card-dl dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+.card-dl dd { margin: 0; color: var(--muted); }
+.rule-step { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 14px !important; color: var(--muted); }
+.rule-step .ui-tag { text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); background: var(--cyan-deep); color: var(--cyan); }
+.avatar { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(94, 225, 255, 0.45); background: radial-gradient(circle at 35% 30%, rgba(94, 225, 255, 0.25), rgba(14, 45, 57, 0.6)); }
+.avatar + h3 { margin-top: 14px; }
+
+/* Stat tiles */
+.stats { margin-top: 0; }
+.section-head + .stats, .grid-3 + .stats { margin-bottom: 16px; }
+.grid-3 + .stats { margin-top: 16px; }
+.stats + .grid-3, .section-foot + .grid-3 { margin-top: 16px; }
+.stat { padding: 20px 22px; }
+.stat-num { font-size: clamp(26px, 3vw, 32px); font-weight: 700; color: var(--cyan); line-height: 1.1; }
+.stat-label { margin-top: 6px; font-size: 14px; color: var(--muted); }
+.section-foot { margin-top: 14px; font-size: 13px; color: var(--faint); }
+
+/* Hero with side cards and a form */
+.hero-asides { display: grid; gap: 12px; margin-top: 28px; max-width: 560px; }
+.hero-aside { padding: 18px 20px; }
+.hero-aside h2 { font-size: 17px; font-weight: 700; }
+.hero-aside p { margin-top: 4px; font-size: 14px; color: var(--muted); }
+.hero-aside p a { color: var(--cyan); }
+.hero-grid > .lead-form { align-self: start; }
+.hero-grid--center { grid-template-columns: minmax(0, 720px); justify-content: center; text-align: center; }
+.hero-grid--center .hero-actions { justify-content: center; }
+.hero-grid--center .hero-lede { margin-left: auto; margin-right: auto; }
+.done-mark { display: block; width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 50%; background: var(--green); box-shadow: 0 0 28px rgba(95, 208, 160, 0.45); }
+
+/* Product globe with labels */
+.hero-visual--ring .globe { filter: drop-shadow(0 0 40px rgba(94, 225, 255, 0.35)); }
+.globe-tag { position: absolute; padding: 5px 10px; border-radius: 8px; background: var(--surface-strong); border: 1px solid var(--border); font-size: 12px; color: var(--text); backdrop-filter: blur(6px); }
+.globe-tag--0 { top: 12%; left: 8%; }
+.globe-tag--1 { top: 20%; right: 4%; }
+.globe-tag--2 { bottom: 24%; left: 2%; }
+.globe-tag--3 { bottom: 16%; right: 6%; }
+
+/* Routing table, policy rule and simulator */
+.ui-lock { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border: 1.5px solid var(--amber); border-radius: 2px; vertical-align: -1px; }
+.ui-table tr.is-locked td { color: var(--faint); }
+.ui-table tr.is-locked td:last-child { color: var(--pink); }
+.ui-table td:first-child { white-space: nowrap; }
+.ui-chips--pick .ui-tag { margin-left: auto; align-self: center; }
+.rule-demo { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.rule-demo .ui { max-width: none; }
+.ui-when { padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.ui-when .ui-label { margin: 0 0 8px; }
+.ui-when .ui-tag { margin: 0 6px 6px 0; background: rgba(255, 255, 255, 0.06); color: var(--text); font-size: 12px; white-space: normal; }
+.ui-when .ui-tag + .ui-tag { margin-left: 0; }
+.ui-attn--ok li::before { background: var(--green) !important; }
+@media (max-width: 900px) { .rule-demo { grid-template-columns: 1fr; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.hero-grid--form { align-items: start; }
+@media (min-width: 1061px) { .mega:has(.mega-col:nth-child(3)) { min-width: 760px; } }
