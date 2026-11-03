@@ -24,9 +24,9 @@ images/             Product screenshots (see below)
 python3 _build/build.py
 ```
 
-This builds the staging site for https://getvocom.github.io/RenOS/ (every page `noindex`, links prefixed with `/RenOS`).
+This builds the site for https://rengroup.ai with every page set to `noindex` while it is pre-launch. It also writes the `CNAME` file GitHub Pages needs for the custom domain.
 
-When the site moves to https://renos.vocom.ai, build with `--prod` instead. That removes `noindex`, drops the `/RenOS` prefix and writes `sitemap.xml` and `robots.txt`.
+When you are ready for search engines, build with `--prod`. That removes `noindex` and writes `sitemap.xml` and `robots.txt`. The domain is set by `DOMAIN` at the top of `_build/build.py`.
 
 ## Switches in `_build/content.py`
 

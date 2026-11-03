@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build the RenOS static site.
 
-    python3 _build/build.py            # staging build for GitHub Pages (noindex, /RenOS base path)
-    python3 _build/build.py --prod     # production build for https://renos.vocom.ai
+    python3 _build/build.py            # build for https://rengroup.ai, every page noindex (pre-launch)
+    python3 _build/build.py --prod     # same domain, indexable, with sitemap.xml and robots.txt
+    python3 _build/build.py --github   # old github.io/RenOS address (links prefixed with /RenOS)
     python3 _build/build.py --out DIR  # write somewhere else (used for checks)
 
 Standard library only. Content lives in content.py; this file is layout and components.
@@ -19,9 +20,10 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import content as C  # noqa: E402
 
-SITE = "https://renos.vocom.ai"
+DOMAIN = "rengroup.ai"
+SITE = f"https://{DOMAIN}"
 PROD = "--prod" in sys.argv
-BASE = "" if PROD else "/RenOS"
+BASE = "/RenOS" if "--github" in sys.argv else ""
 OUT = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else ROOT
 NOINDEX_ALL = not PROD
 IMAGE_EXTS = ("webp", "avif", "svg", "png", "jpg", "jpeg")
@@ -583,8 +585,10 @@ def main():
             if os.path.isdir(src):
                 shutil.copytree(src, os.path.join(OUT, d), dirs_exist_ok=True)
         shutil.copy(os.path.join(ROOT, "favicon.svg"), OUT)
+    if not BASE:
+        open(os.path.join(OUT, "CNAME"), "w").write(DOMAIN + "\n")
     open(manifest, "w").write("\n".join(written) + "\n")
-    print(f"Built {len(pages)} pages into {OUT} ({'production' if PROD else 'staging'}, base '{BASE}')")
+    print(f"Built {len(pages)} pages into {OUT} ({SITE}, {'indexable' if PROD else 'noindex'}, base '{BASE}')")
 
 
 if __name__ == "__main__":
