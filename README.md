@@ -24,9 +24,9 @@ images/             Product screenshots (see below)
 python3 _build/build.py
 ```
 
-This builds the site for https://rengroup.ai with every page set to `noindex` while it is pre-launch. It also writes the `CNAME` file GitHub Pages needs for the custom domain.
+This builds the live site for https://rengroup.ai: indexable pages plus `sitemap.xml` and `robots.txt` (submitted to Google Search Console). It also writes the `CNAME` file GitHub Pages needs for the custom domain.
 
-When you are ready for search engines, build with `--prod`. That removes `noindex` and writes `sitemap.xml` and `robots.txt`. The domain is set by `DOMAIN` at the top of `_build/build.py`.
+Build with `--preview` to set every page to `noindex` and skip the sitemap. The domain is set by `DOMAIN` at the top of `_build/build.py`.
 
 ## Switches in `_build/content.py`
 

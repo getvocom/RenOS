@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build the RenOS static site.
 
-    python3 _build/build.py            # build for https://rengroup.ai, every page noindex (pre-launch)
-    python3 _build/build.py --prod     # same domain, indexable, with sitemap.xml and robots.txt
+    python3 _build/build.py            # build for https://rengroup.ai, indexable, with sitemap.xml and robots.txt
+    python3 _build/build.py --preview  # same, but every page noindex and no sitemap (pre-launch)
     python3 _build/build.py --github   # old github.io/RenOS address (links prefixed with /RenOS)
     python3 _build/build.py --out DIR  # write somewhere else (used for checks)
 
@@ -22,7 +22,7 @@ import content as C  # noqa: E402
 
 DOMAIN = "rengroup.ai"
 SITE = f"https://{DOMAIN}"
-PROD = "--prod" in sys.argv
+PROD = "--preview" not in sys.argv
 BASE = "/RenOS" if "--github" in sys.argv else ""
 OUT = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else ROOT
 NOINDEX_ALL = not PROD
