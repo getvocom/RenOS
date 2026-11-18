@@ -122,4 +122,24 @@
       });
     });
   });
+  // ---- Cookie consent (Google Consent Mode v2)
+  var consent = document.getElementById('consent');
+  if (consent) {
+    var KEY = 'renos-consent';
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (err) {}
+    var showConsent = function () { consent.hidden = false; };
+    if (stored !== 'granted' && stored !== 'denied') showConsent();
+    consent.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-consent]');
+      if (!btn) return;
+      var choice = btn.getAttribute('data-consent');
+      try { localStorage.setItem(KEY, choice); } catch (err) {}
+      if (typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: choice });
+      consent.hidden = true;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-consent-open]'), function (el) {
+      el.addEventListener('click', showConsent);
+    });
+  }
 })();

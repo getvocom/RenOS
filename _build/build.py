@@ -32,10 +32,17 @@ GA_TAG = f"""<!-- Google tag (gtag.js) -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){{dataLayer.push(arguments);}}
+  gtag('consent', 'default', {{ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', wait_for_update: 500}});
+  try {{ if (localStorage.getItem('renos-consent') === 'granted') gtag('consent', 'update', {{analytics_storage: 'granted'}}); }} catch (err) {{}}
   gtag('js', new Date());
   gtag('config', '{GA_ID}');
 </script>
 """ if PROD else ""
+# Cookie banner (production only). site.js shows it until the visitor chooses.
+CONSENT_BANNER = """<div class="consent" id="consent" role="region" aria-label="Cookie Consent" hidden>
+<p class="consent-text">We use analytics cookies to understand how visitors use this site. They stay off unless you accept. You can change your choice any time from Cookie Settings in the footer.</p>
+<div class="consent-actions"><button type="button" class="btn btn--ghost btn--sm" data-consent="denied">Decline</button><button type="button" class="btn btn--primary btn--sm" data-consent="granted">Accept</button></div>
+</div>""" if PROD else ""
 IMAGE_EXTS = ("webp", "avif", "svg", "png", "jpg", "jpeg")
 
 e = html.escape
@@ -559,7 +566,7 @@ def footer():
     return f'''<footer class="site-footer"><div class="container">
 <div class="footer-top"><div class="footer-brand"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>RenOS</a>
 <p>{e(C.FACTS["footer"])}</p></div><div class="footer-cols">{cols}</div></div>
-<div class="footer-row"><span>RenOS · Ren Group · Model credits supplied by <a href="https://www.vocom.ai">Vocom</a></span><span class="footer-rule" aria-hidden="true"></span><span>© 2026 Ren Group</span></div>
+<div class="footer-row"><span>RenOS · Ren Group · Model credits supplied by <a href="https://www.vocom.ai">Vocom</a></span><span class="footer-rule" aria-hidden="true"></span><span>© 2026 Ren Group{' · <button type="button" class="footer-link" data-consent-open>Cookie Settings</button>' if PROD else ''}</span></div>
 </div></footer>'''
 
 
@@ -652,6 +659,7 @@ def page_html(page):
 {nav()}
 <main id="main">{body}</main>
 {footer()}
+{CONSENT_BANNER}
 <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
