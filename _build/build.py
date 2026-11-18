@@ -26,6 +26,16 @@ PROD = "--preview" not in sys.argv
 BASE = "/RenOS" if "--github" in sys.argv else ""
 OUT = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else ROOT
 NOINDEX_ALL = not PROD
+GA_ID = "G-HQM0KQS7G3"  # Google Analytics 4; only added to production builds
+GA_TAG = f"""<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_ID}');
+</script>
+""" if PROD else ""
 IMAGE_EXTS = ("webp", "avif", "svg", "png", "jpg", "jpeg")
 
 e = html.escape
@@ -616,7 +626,7 @@ def page_html(page):
     return f'''<!DOCTYPE html>
 <html lang="en-US">
 <head>
-<meta charset="utf-8" />
+{GA_TAG}<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{e(page["title"])}</title>
 <meta name="description" content="{e(page["description"])}" />
