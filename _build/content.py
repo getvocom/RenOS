@@ -438,7 +438,7 @@ FOOTER = [
                    ("Credit Unions", "/industries/credit-unions"), ("MSPs and IT Partners", "/industries/msps"),
                    ("All Solutions", "/solutions")]),
     ("Company", [("About", "/about"), ("Partners", "/partners"), ("Resources", "/resources"), ("Contact", "/contact"),
-                 ("Book a Pilot", "/pilot"), ("Sign In", "/login")]),
+                 ("Book a Pilot", "/pilot"), ("Sign In", "/login"), ("Privacy Policy", "/privacy")]),
 ]
 
 # ------------------------------------------------------------------ Page helpers
@@ -1251,6 +1251,24 @@ def pages():
                  "buttons": [("Go Home", "/"), ("Book a Pilot", "/pilot", "ghost")]},
         "sections": [], "cta": False,
     })
+    # ---------------- Privacy policy
+    P.append({
+        "route": "/privacy", "crumb": "Privacy Policy",
+        "title": "Privacy Policy | RenOS by Ren Group",
+        "description": "How Ren Group collects, uses and protects personal information on rengroup.ai, including forms, analytics cookies, your choices and how to reach us.",
+        "hero": {"eyebrow": "Legal", "h1": "Privacy Policy",
+                 "lede": f"Last updated {PRIVACY_UPDATED}. This policy explains what we collect when you visit rengroup.ai, why we collect it and the choices you have."},
+        "sections": [
+            {"type": "toc", "tight": True, "items": [
+                ("who-we-are", "Who We Are"), ("what-we-collect", "What We Collect"), ("how-we-use", "How We Use It"),
+                ("cookies", "Cookies and Analytics"), ("sharing", "Who We Share It With"), ("transfers", "Where It Is Processed"),
+                ("retention", "How Long We Keep It"), ("rights", "Your Choices and Rights"), ("security", "Security"),
+                ("children", "Children"), ("changes", "Changes to This Policy"), ("contact-us", "Contact Us")]},
+            {"type": "prose", "html": PRIVACY_HTML},
+        ],
+        "cta": False,
+    })
+
     return P
 
 
@@ -1312,4 +1330,73 @@ GUIDE_HTML = '''
 <h2 id="renos">Where RenOS Fits</h2>
 <p>RenOS is an AI operating system for teams. People pick <a href="/product/chat">Chat</a>, <a href="/product/builder">Builder</a> or <a href="/product/agents">Agent</a> mode and describe the task. <a href="/product/routing">Policy routing</a> picks the model under your rules and explains why in plain language. Every task writes an entry to the <a href="/product/audit-trail">AI audit trail</a>, and the <a href="/product/admin">admin dashboard</a> shows who ran what, on which model, at what cost. It reaches <a href="/models">hundreds of AI models</a> through one workspace.</p>
 <p>Pilots are open. <a href="/pilot">Start with a 60-day pilot</a> or <a href="/contact">talk to a human</a>.</p>
+'''
+
+
+PRIVACY_UPDATED = "November 20, 2026"
+PRIVACY_HTML = '''
+<h2 id="who-we-are">Who We Are</h2>
+<p>Ren Group ("we", "us") runs rengroup.ai, the website for RenOS. This policy covers this website: the pages you browse, the forms you fill in and the cookies we use.</p>
+<p>The RenOS application at app.rengroup.ai is covered separately. If your organization uses RenOS, the data your team puts into it is handled under your organization's agreement with us, and your administrator controls how it is used.</p>
+
+<h2 id="what-we-collect">What We Collect</h2>
+<h3>Information You Give Us</h3>
+<p>When you book a pilot, contact us or ask a question, we collect what you type into the form. That is usually your name, work email, company, role, team size and your message.</p>
+<h3>Analytics, Only With Your Consent</h3>
+<p>If you accept analytics cookies, Google Analytics records how you use the site: pages viewed, time on page, the site that referred you, your browser and device type, and an approximate location based on your IP address. We do not use it to identify you by name.</p>
+<h3>Technical Information</h3>
+<p>Like any website, our hosting provider receives basic technical information such as your IP address, browser type and the time of your visit, so it can deliver pages and protect the site from abuse.</p>
+
+<h2 id="how-we-use">How We Use It</h2>
+<ul>
+<li>To reply to you, set up a pilot or follow up on your request.</li>
+<li>To understand which pages are useful so we can improve the site.</li>
+<li>To keep the site secure and working.</li>
+<li>To meet legal obligations.</li>
+</ul>
+<p>We do not sell your personal information, and we do not use it for advertising. Where the law requires a legal basis, we rely on your consent for analytics, on taking steps at your request for form submissions, and on our legitimate interest in running a secure website.</p>
+
+<h2 id="cookies">Cookies and Analytics</h2>
+<p>The first time you visit, we ask whether you accept analytics cookies. Until you accept, Google Analytics does not set cookies on your device. Google may still receive limited cookieless signals, such as a page view without an identifier, which it uses to estimate overall traffic.</p>
+<p>If you accept, Google Analytics sets cookies named <code>_ga</code> and <code>_ga_&lt;ID&gt;</code>, which last up to two years. We also save your choice in your browser's local storage under <code>renos-consent</code>, so we don't ask again on every page. We do not use advertising cookies.</p>
+<p>You can change your choice at any time: <button type="button" class="footer-link inline-link" data-consent-open>open Cookie Settings</button>. You can also clear cookies in your browser or install Google's <a href="https://tools.google.com/dlpage/gaoptout">Analytics opt-out add-on</a>. Read <a href="https://policies.google.com/technologies/partner-sites">how Google uses data from sites that use its services</a>.</p>
+
+<h2 id="sharing">Who We Share It With</h2>
+<p>We share personal information only with service providers that help us run the site and respond to you, and only for that purpose:</p>
+<ul>
+<li>Google, for website analytics when you have accepted analytics cookies.</li>
+<li>Our website hosting provider, to serve pages.</li>
+<li>The services we use to receive form submissions and email.</li>
+</ul>
+<p>We may also disclose information if the law requires it, to protect our rights or the safety of others, or as part of a merger, acquisition or sale of assets, in which case this policy continues to apply.</p>
+
+<h2 id="transfers">Where It Is Processed</h2>
+<p>Our service providers may process information in the United States and other countries. Where the law requires it, we rely on appropriate safeguards for those transfers, such as standard contractual clauses.</p>
+
+<h2 id="retention">How Long We Keep It</h2>
+<p>We keep form submissions for as long as we need them to respond to you and manage our relationship, then delete them. Analytics data is kept for the retention period set in our Google Analytics account, after which Google deletes it.</p>
+
+<h2 id="rights">Your Choices and Rights</h2>
+<p>Depending on where you live, you may have the right to:</p>
+<ul>
+<li>Ask what personal information we hold about you and get a copy.</li>
+<li>Correct information that is wrong.</li>
+<li>Ask us to delete your information.</li>
+<li>Object to or limit how we use it.</li>
+<li>Withdraw your consent to analytics at any time.</li>
+</ul>
+<p>To make a request, <a href="#contact-us">contact us</a>. We will not treat you differently for exercising these rights. If you are in the European Economic Area or the United Kingdom, you can also complain to your local data protection authority.</p>
+<p>California residents: we do not sell personal information or share it for cross-context behavioral advertising.</p>
+
+<h2 id="security">Security</h2>
+<p>We use reasonable technical and organizational measures to protect the information we hold, including encrypted connections to this site. No method of sending or storing data is completely secure, so we cannot guarantee absolute security.</p>
+
+<h2 id="children">Children</h2>
+<p>This site is for businesses and is not directed at children under 16. We do not knowingly collect their personal information. If you believe a child has sent us information, contact us and we will delete it.</p>
+
+<h2 id="changes">Changes to This Policy</h2>
+<p>We may update this policy as the site or the law changes. When we do, we change the date at the top of this page. If a change is significant, we will make it clear on the site.</p>
+
+<h2 id="contact-us">Contact Us</h2>
+<p>For privacy questions or requests, reach Ren Group through our <a href="/contact">contact page</a>. Tell us what you are asking for, and we will reply within 30 days.</p>
 '''

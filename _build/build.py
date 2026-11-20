@@ -40,7 +40,7 @@ GA_TAG = f"""<!-- Google tag (gtag.js) -->
 """ if PROD else ""
 # Cookie banner (production only). site.js shows it until the visitor chooses.
 CONSENT_BANNER = """<div class="consent" id="consent" role="region" aria-label="Cookie Consent" hidden>
-<p class="consent-text">We use analytics cookies to understand how visitors use this site. They stay off unless you accept. You can change your choice any time from Cookie Settings in the footer.</p>
+<p class="consent-text">We use analytics cookies to understand how visitors use this site. They stay off unless you accept. You can change your choice any time from Cookie Settings in the footer. <a href="/privacy">Privacy Policy</a></p>
 <div class="consent-actions"><button type="button" class="btn btn--ghost btn--sm" data-consent="denied">Decline</button><button type="button" class="btn btn--primary btn--sm" data-consent="granted">Accept</button></div>
 </div>""" if PROD else ""
 IMAGE_EXTS = ("webp", "avif", "svg", "png", "jpg", "jpeg")
